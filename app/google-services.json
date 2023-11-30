@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "575750044892",
+    "project_id": "skripsidb-af74b",
+    "storage_bucket": "skripsidb-af74b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575750044892:android:a4e8a20b174b1314540819",
+        "android_client_info": {
+          "package_name": "com.example.personalrecordv4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGJoEHYdzNN3fXWnIarLgJU0rT3aes_6U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

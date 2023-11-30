@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/WorkoutNav"
+        android:icon="@drawable/ic_dumbell"
+        android:title=""
+        />
+    <item
+        android:id="@+id/TutorialNav"
+        android:icon="@drawable/ic_tutorial"
+        android:title=""
+         />
+    <item
+        android:id="@+id/HistoryNav"
+        android:icon="@drawable/ic_history"
+        android:title=""
+        />
+    <item
+        android:id="@+id/WeightNav"
+        android:icon="@drawable/ic_weight"
+        android:title=""
+        />
+    <item
+        android:id="@+id/ProfileNav"
+        android:icon="@drawable/ic_profile"
+        android:title=""
+        />
+</menu>
