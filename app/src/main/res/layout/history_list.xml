@@ -15,24 +15,35 @@
         >
 
         <TextView
-            android:id="@+id/tvPlanName"
+            android:id="@+id/tvNameHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:text="Workout Name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:text="Nama Plan"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
+            />
 
         <TextView
-            android:id="@+id/tvType"
+            android:id="@+id/textView16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:text="Tipe Plan"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvPlanName" />
+            android:text="TextView"
+            app:layout_constraintStart_toStartOf="@+id/tvNameHistory"
+            app:layout_constraintTop_toBottomOf="@+id/tvNameHistory" />
+
+        <TextView
+            android:id="@+id/tvWorkoutDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

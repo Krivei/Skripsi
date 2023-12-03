@@ -60,7 +60,8 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     //Firestore
     implementation("com.google.firebase:firebase-firestore")
-
+    //Cloud Storage
+    implementation("com.google.firebase:firebase-storage-ktx")
     implementation("androidx.activity:activity-ktx:1.8.1")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
 }
