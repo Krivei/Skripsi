@@ -31,17 +31,6 @@ class UserRepository(){
             task ->
             if (task.isSuccessful){
                 val userId = auth.currentUser!!.uid
-//                val user = User(email, nama)
-//                val userMap = HashMap<String, Any?>()
-//                userMap["name"] = nama
-//                userMap["email"] = email
-//                val workoutPlanIdsMap = HashMap<String, String>()
-//                workoutPlanIdsMap["WorkoutplanId1"] = "L8TIeoXh56xZZU8ryyWW"
-//                workoutPlanIdsMap["WorkoutplanId2"] = "LadzYV9WqbWBmRld0N64"
-//                workoutPlanIdsMap["WorkoutplanId3"] = "L5F66wExfEO6PObqis9W"
-//                val user = HashMap<String, Any?>()
-//                user["User"] = userMap
-//                user["WorkoutplanId"] = workoutPlanIdsMap
                 val user = User(email,nama)
                 user.addWorkoutPlanId("WorkoutplanId1", "L8TIeoXh56xZZU8ryyWW")
                 user.addWorkoutPlanId("WorkoutplanId2","LadzYV9WqbWBmRld0N64")
@@ -89,5 +78,10 @@ class UserRepository(){
                 Log.d("TEST", "Current data: null")
             }
         }
+    }
+
+    fun editData(nama: String, password: String){
+        db.document(auth.currentUser!!.uid).update("name",nama)
+        auth.currentUser!!.updatePassword(password)
     }
  }

@@ -29,13 +29,19 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }else{
                 binding.tvusername.text = userViewModel.userData.value!!.name
                 binding.tvusername2.text = userViewModel.userData.value!!.name
-                binding.tvemail.text = userViewModel.userData.value.toString()
+                binding.tvemail.text = userViewModel.userData.value!!.email
             }
         })
         binding.btnSignout.setOnClickListener {
             userViewModel.signOut()
             startActivity(Intent(activity, AuthActivity::class.java))
             requireActivity().finish()
+        }
+
+        binding.button2.setOnClickListener {
+            val intent = Intent(activity, EditProfileActivity::class.java)
+            intent.putExtra(EditProfileActivity.EXTRA_NAMA, binding.tvusername.text.toString())
+            startActivity(intent)
         }
 
     }
