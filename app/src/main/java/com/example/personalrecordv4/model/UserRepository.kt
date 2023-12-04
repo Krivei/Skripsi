@@ -2,6 +2,7 @@ package com.example.personalrecordv4.model
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.personalrecordv4.viewmodel.WorkoutPlanViewModel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -9,14 +10,13 @@ import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
 
 import com.google.firebase.ktx.Firebase
-//import java.sql.Timestamp
-//import java.util.Date
 
 class UserRepository(){
     var _user: MutableLiveData<FirebaseUser> = MutableLiveData()
     var _userData : MutableLiveData<User> = MutableLiveData()
     var _isRegistered: MutableLiveData<Boolean> = MutableLiveData()
     var _loginResult: MutableLiveData<Boolean> = MutableLiveData()
+    var workoutViewModel = WorkoutPlanViewModel()
     private val db = Firebase.firestore.collection("user")
     private val auth = Firebase.auth
     init{
@@ -31,24 +31,15 @@ class UserRepository(){
             task ->
             if (task.isSuccessful){
                 val userId = auth.currentUser!!.uid
-//                val user = User(email, nama)
-//                val userMap = HashMap<String, Any?>()
-//                userMap["name"] = nama
-//                userMap["email"] = email
-//                val workoutPlanIdsMap = HashMap<String, String>()
-//                workoutPlanIdsMap["WorkoutplanId1"] = "L8TIeoXh56xZZU8ryyWW"
-//                workoutPlanIdsMap["WorkoutplanId2"] = "LadzYV9WqbWBmRld0N64"
-//                workoutPlanIdsMap["WorkoutplanId3"] = "L5F66wExfEO6PObqis9W"
-//                val user = HashMap<String, Any?>()
-//                user["User"] = userMap
-//                user["WorkoutplanId"] = workoutPlanIdsMap
-                val user = User(email,nama)
-                user.addWorkoutPlanId("WorkoutplanId1", "L8TIeoXh56xZZU8ryyWW")
-                user.addWorkoutPlanId("WorkoutplanId2","LadzYV9WqbWBmRld0N64")
-                user.addWorkoutPlanId("WorkoutplanId3","L5F66wExfEO6PObqis9W")
+                val workout = mutableListOf<String>()
+                workout.add("L8TIeoXh56xZZU8ryyWW")
+                workout.add("LadzYV9WqbWBmRld0N64")
+                workout.add("L5F66wExfEO6PObqis9W")
+                val user = User(email,nama, workout)
                 db.document(userId).set(user)
                 _isRegistered.postValue(true)
             } else {
+                _isRegistered.postValue(false)
                 Log.i("Test", "Register: Gagal")
             }
         }
@@ -59,22 +50,23 @@ class UserRepository(){
             if (task.isSuccessful){
                 _user.postValue(auth.currentUser)
                 _loginResult.postValue(true)
-
-                Log.i("TEST", "Login Sukses", task.exception)
-
+                db.document(auth.currentUser!!.uid).get().addOnSuccessListener {document ->
+                    _userData.postValue(document.toObject<User>())
+                    val titleList = document.toObject<User>()!!.workoutPlanId
+                    workoutViewModel.getWorkoutPlan(titleList)
+                }
             }  else {
                 _loginResult.postValue(false)
-                Log.i("TEST", "Login Gagal", task.exception)
             }
             }.addOnFailureListener{
-                Log.i("TEST", "Gagal Login")
+                _loginResult.postValue(false)
             }
 
 
     }
     fun signOut(){
         auth.signOut()
-        Log.i("TEST", "Sign Out Sukses")
+        Log.i("SignOut", "Sign Out Sukses")
     }
     fun updateData(){
         db.document(auth.currentUser!!.uid).addSnapshotListener{
@@ -90,4 +82,5 @@ class UserRepository(){
             }
         }
     }
+
  }
