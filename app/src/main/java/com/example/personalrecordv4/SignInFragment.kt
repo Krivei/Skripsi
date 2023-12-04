@@ -2,9 +2,7 @@ package com.example.personalrecordv4
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.personalrecordv4.databinding.FragmentSignInBinding
 import com.example.personalrecordv4.viewmodel.UserViewModel
@@ -26,6 +24,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             val result = savedInstanceState.getString(STATE_EMAIL)
             binding.ETEmail.setText(result)
         }
+
         binding.BtnSignin.setOnClickListener {
             val email = binding.ETEmail.text.toString().trim()
             val password = binding.ETPassword.text.toString().trim()
@@ -47,6 +46,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                 commit()
             }
         }
+
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

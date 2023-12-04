@@ -29,7 +29,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }else{
                 binding.tvusername.text = userViewModel.userData.value!!.name
                 binding.tvusername2.text = userViewModel.userData.value!!.name
-                binding.tvemail.text = userViewModel.userData.value.toString()
+                binding.tvemail.text = userViewModel.userData.value!!.email
             }
         })
         binding.btnSignout.setOnClickListener {

@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.example.personalrecordv4.adapter.SplitAdapter
+import com.example.personalrecordv4.adapter.WorkoutPlanAdapter
 import com.example.personalrecordv4.databinding.ActivityMainBinding
 import com.example.personalrecordv4.viewmodel.UserViewModel
 import com.google.firebase.auth.FirebaseUser
@@ -30,11 +33,6 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         })
-//        binding.button.setOnClickListener {
-//            userViewModel.logOut()
-//            startActivity(Intent(this@MainActivity, AuthActivity::class.java))
-//            finish()
-//        }
         binding.bottomnav.setOnItemSelectedListener {
             setMode(it.itemId)
             true
