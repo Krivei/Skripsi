@@ -38,7 +38,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             requireActivity().finish()
         }
 
-        binding.button2.setOnClickListener {
+        binding.btnEditProfile.setOnClickListener {
             val intent = Intent(activity, EditProfileActivity::class.java)
             intent.putExtra(EditProfileActivity.EXTRA_NAMA, binding.tvusername.text.toString())
             startActivity(intent)

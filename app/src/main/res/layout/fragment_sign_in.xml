@@ -35,7 +35,6 @@
             android:textColor="@color/white"
             android:textSize="14dp"
             android:textStyle="bold"
-            app:layout_constraintHorizontal_bias="0.294"
             app:layout_constraintStart_toStartOf="@+id/textView1"
             app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
@@ -46,14 +45,12 @@
             android:layout_marginTop="15dp"
             android:ems="10"
             android:hint="E-mail"
-            android:textColor="@color/white"
             android:inputType="textEmailAddress"
+            android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.453"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView7"
             app:layout_constraintTop_toBottomOf="@+id/textView7"
             app:layout_constraintVertical_bias="0.029" />
 
@@ -68,7 +65,6 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="14dp"
-            app:layout_constraintHorizontal_bias="0.447"
             app:layout_constraintStart_toStartOf="@+id/ETEmail"
             app:layout_constraintTop_toBottomOf="@+id/ETEmail" />
 

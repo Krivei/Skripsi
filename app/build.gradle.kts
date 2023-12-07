@@ -64,4 +64,8 @@ dependencies {
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("androidx.activity:activity-ktx:1.8.1")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation("com.google.firebase:firebase-storage:20.2.2")
+    implementation ("com.github.bumptech.glide:glide:4.13.0")
+
+    implementation ("androidx.camera:camera-core:1.1.0")
 }
