@@ -12,41 +12,35 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.personalrecordv4.adapter.SplitAdapter
-import com.example.personalrecordv4.adapter.WorkoutPlanAdapter
 import com.example.personalrecordv4.model.Split
-import com.example.personalrecordv4.model.WorkoutPlan
 import com.example.personalrecordv4.viewmodel.SplitViewModel
-import com.example.personalrecordv4.viewmodel.UserViewModel
-import com.example.personalrecordv4.viewmodel.WorkoutPlanViewModel
 
-class SplitListFragment : Fragment(R.layout.fragment_split_list) {
+class SplitListFragment() : Fragment(R.layout.fragment_split_list) {
     private var recyclerView : RecyclerView? = null
     private val splitViewModel : SplitViewModel by activityViewModels()
-    private val workoutPlanViewModel : WorkoutPlanViewModel by activityViewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        workoutPlanViewModel.listWorkoutPlan.observe(this, Observer {
-            if(it == null){
-                Log.i("SplitFragment", "WorkoutPlan: Gagal")
-            }else{
-                splitViewModel.getSplit(it[0].SplitId.toMutableList())
-                Log.i("SplitFragment", "WorkoutPlan: Sukses ${it[0].SplitId}")
-            }
-        })
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_split_list, container, false)
+            return inflater.inflate(R.layout.fragment_split_list, container, false)
     }
-
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
-        var progressBar = view?.findViewById<ProgressBar>(R.id.progress_loader)
+        val data = arguments
+        Log.i("Test", "Split: ${requireArguments().getStringArray("splitID")}")
+        if (data != null) {
+          requireArguments().getStringArray("splitID")?.toMutableList()?.let {
+              if (it != null){
+                  splitViewModel.getSplit(it)
+              }else{
+                    Log.i("Test", "Split: Gagal")
+              }
+          }
+        }
+
+        val progressBar = view?.findViewById<ProgressBar>(R.id.progress_loader)
         splitViewModel.isLoadingData.observe(viewLifecycleOwner, Observer {
             if(it == null){
                 Log.i("Test", "Loading: Gagal")
@@ -58,7 +52,7 @@ class SplitListFragment : Fragment(R.layout.fragment_split_list) {
                 }
             }
         })
-        splitViewModel.splitData.observe(viewLifecycleOwner, Observer<MutableList<Split>>{
+        splitViewModel.splitData.observe(viewLifecycleOwner, Observer<MutableList<Split>?>{
             if(it == null){
                 Log.i("Test", "WorkoutPlan: Gagal")
             }else{

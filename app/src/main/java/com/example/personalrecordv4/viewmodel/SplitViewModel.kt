@@ -7,7 +7,7 @@ import com.example.personalrecordv4.model.SplitRepository
 import com.example.personalrecordv4.model.WorkoutPlan
 
 class SplitViewModel: ViewModel() {
-    private var _listSplit: MutableLiveData<MutableList<Split>> = MutableLiveData()
+    private var _listSplit: MutableLiveData<MutableList<Split>?> = MutableLiveData()
 
     private var repo = SplitRepository()
     private var isLoading: MutableLiveData<Boolean> = MutableLiveData()
@@ -15,7 +15,7 @@ class SplitViewModel: ViewModel() {
     val isLoadingData: MutableLiveData<Boolean>
         get() = isLoading
 
-    val splitData: MutableLiveData<MutableList<Split>>
+    val splitData: MutableLiveData<MutableList<Split>?>
         get() = _listSplit
     init {
         _listSplit = repo._listSplit
