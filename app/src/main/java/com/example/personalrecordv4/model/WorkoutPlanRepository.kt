@@ -27,10 +27,12 @@ class WorkoutPlanRepository() {
     fun getWorkoutPlan(workoutPlan: MutableList<String>) {
         isLoading.postValue(true)
         db.whereIn(FieldPath.documentId(), workoutPlan).get().addOnSuccessListener { documents ->
+
            val listWorkoutPlan = mutableListOf<WorkoutPlan>()
             for (document in documents) {
                 val workoutPlan = document.toObject<WorkoutPlan>()
                 listWorkoutPlan.add(workoutPlan)
+                Log.i("WorkoutPlan", "$workoutPlan")
             }
             _listWorkoutPlan.postValue(listWorkoutPlan)
             isLoading.postValue(false)

@@ -33,8 +33,8 @@ class UserRepository(){
                 val userId = auth.currentUser!!.uid
                 val workout = mutableListOf<String>()
                 workout.add("L8TIeoXh56xZZU8ryyWW")
-                workout.add("LadzYV9WqbWBmRld0N64")
-                workout.add("L5F66wExfEO6PObqis9W")
+                workout.add("8xjfbhh8AHvqXTbX4zNs")
+                workout.add("PPVTKhZEjwvD0xU12Qs3")
                 val user = User(email,nama, workout)
                 db.document(userId).set(user)
                 _isRegistered.postValue(true)
@@ -48,11 +48,14 @@ class UserRepository(){
         auth.signInWithEmailAndPassword(email,password)
             .addOnCompleteListener{task ->
             if (task.isSuccessful){
+                Log.i("SignIn","Login Berhasil")
                 _user.postValue(auth.currentUser)
                 _loginResult.postValue(true)
                 db.document(auth.currentUser!!.uid).get().addOnSuccessListener {document ->
                     _userData.postValue(document.toObject<User>())
+                    Log.i("SignIn","${_userData.value}")
                     val titleList = document.toObject<User>()!!.workoutPlanId
+                    Log.i("SignIn","${titleList}")
                     workoutViewModel.getWorkoutPlan(titleList)
                 }
             }  else {
@@ -77,10 +80,16 @@ class UserRepository(){
             }
             if (snapshot != null && snapshot.exists()) {
                 _userData.value = snapshot.toObject<User>()
+                Log.i("UpdateData", "${_userData.value}")
             } else {
                 Log.d("TEST", "Current data: null")
             }
         }
+    }
+
+    fun editData(name: String, password: String){
+        db.document(auth.currentUser!!.uid).update("name", name)
+        auth.currentUser!!.updatePassword(password)
     }
 
  }

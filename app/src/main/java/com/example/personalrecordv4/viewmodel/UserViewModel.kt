@@ -51,4 +51,8 @@ class UserViewModel : ViewModel() {
     fun signOut(){
         repo.signOut()
     }
+
+    fun editData(name: String, password: String){
+        repo.editData(name,password)
+    }
 }

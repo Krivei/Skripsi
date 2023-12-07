@@ -24,20 +24,20 @@ class SplitListFragment() : Fragment(R.layout.fragment_split_list) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-            return inflater.inflate(R.layout.fragment_split_list, container, false)
+        return inflater.inflate(R.layout.fragment_split_list, container, false)
     }
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
         val data = arguments
         Log.i("Test", "Split: ${requireArguments().getStringArray("splitID")}")
         if (data != null) {
-          requireArguments().getStringArray("splitID")?.toMutableList()?.let {
-              if (it != null){
-                  splitViewModel.getSplit(it)
-              }else{
+            requireArguments().getStringArray("splitID")?.toMutableList()?.let {
+                if (it != null){
+                    splitViewModel.getSplit(it)
+                }else{
                     Log.i("Test", "Split: Gagal")
-              }
-          }
+                }
+            }
         }
 
         val progressBar = view?.findViewById<ProgressBar>(R.id.progress_loader)

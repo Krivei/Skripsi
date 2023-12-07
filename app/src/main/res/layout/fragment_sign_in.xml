@@ -31,13 +31,11 @@
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:text="Please Sign In to Continue"
             android:textColor="@color/white"
             android:textSize="14dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.294"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView1"
             app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
         <EditText
@@ -47,14 +45,12 @@
             android:layout_marginTop="15dp"
             android:ems="10"
             android:hint="E-mail"
-            android:textColor="@color/white"
             android:inputType="textEmailAddress"
+            android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.453"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView7"
             app:layout_constraintTop_toBottomOf="@+id/textView7"
             app:layout_constraintVertical_bias="0.029" />
 
@@ -66,28 +62,11 @@
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
+            android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="14dp"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.447"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ETEmail"
             app:layout_constraintTop_toBottomOf="@+id/ETEmail" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Forgot Password?"
-            android:textColor="@color/white"
-            android:textSize="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.718"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ETPassword"
-            app:layout_constraintVertical_bias="0.002" />
 
         <Button
             android:id="@+id/BtnSignin"

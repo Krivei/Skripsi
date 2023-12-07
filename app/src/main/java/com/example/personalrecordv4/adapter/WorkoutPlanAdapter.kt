@@ -18,7 +18,10 @@ import com.example.personalrecordv4.viewmodel.SplitViewModel
 class WorkoutPlanAdapter(private val workoutPlanList: MutableList<WorkoutPlan>) : RecyclerView.Adapter<WorkoutPlanAdapter.WorkoutPlanViewHolder>(){
     inner class WorkoutPlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val WorkoutPlanTitle: TextView = itemView.findViewById(
-            R.id.workplantitle)
+            R.id.tvPlanName)
+        val WorkoutPlanType: TextView = itemView.findViewById(
+            R.id.tvPlanType
+        )
 
     }
 
@@ -35,6 +38,7 @@ class WorkoutPlanAdapter(private val workoutPlanList: MutableList<WorkoutPlan>) 
     override fun onBindViewHolder(holder: WorkoutPlanViewHolder, position: Int) {
         val currentItem = workoutPlanList[position]
         holder.WorkoutPlanTitle.text = currentItem.Name
+        holder.WorkoutPlanType.text = currentItem.Type
         holder.itemView.setOnClickListener {
             Log.i("Test", "Clicked: $currentItem")
             var spltids: Array<String> = arrayOf()
@@ -50,10 +54,6 @@ class WorkoutPlanAdapter(private val workoutPlanList: MutableList<WorkoutPlan>) 
             fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
-            }
         }
     }
-
-
-
-
+}
