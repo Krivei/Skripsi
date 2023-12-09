@@ -3,6 +3,7 @@ package com.example.personalrecordv4
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -37,27 +38,33 @@ class MainActivity : AppCompatActivity() {
             setMode(it.itemId)
             true
         }
+
     }
 
     fun setMode(mode: Int){
         when (mode){
             R.id.WorkoutNav -> {
+                Log.i("Navigate", "Workout List")
                 navigateToFragment(workoutListFragment)
                 title = "Workout Plans"
             }
             R.id.ProfileNav -> {
+                Log.i("Navigate", "Profile")
                 navigateToFragment(profileFragment)
                 title="Profile"
             }
             R.id.HistoryNav -> {
+                Log.i("Navigate", "History")
                 navigateToFragment(historyFragment)
                 title="Workout History"
             }
             R.id.TutorialNav -> {
+                Log.i("Navigate", "Tutorial")
                 navigateToFragment(tutorialsFragment)
                 title="Tutorials"
             }
             R.id.WeightNav -> {
+                Log.i("Navigate", "WeightLog")
                 navigateToFragment(weightLogFragment)
                 title="Weight Logs"
             }

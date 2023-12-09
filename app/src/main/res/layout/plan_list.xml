@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
+    android:background="@color/white"
+
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +20,7 @@
             android:id="@+id/tvPlanName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="14sp"
             android:text="Nama Plan"
@@ -31,6 +33,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:textColor="@color/black"
             android:text="Tipe Plan"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvPlanName" />

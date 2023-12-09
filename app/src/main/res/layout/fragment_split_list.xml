@@ -4,12 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".WorkoutListFragment">
+    tools:context=".WorkoutListFragment"
+    android:background="@color/white"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout8"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:background="#3C699F"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -66,6 +66,9 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("com.google.firebase:firebase-storage:20.2.2")
     implementation ("com.github.bumptech.glide:glide:4.13.0")
-
     implementation ("androidx.camera:camera-core:1.1.0")
+    implementation ("androidx.media3:media3-exoplayer:1.1.1")
+    implementation ("androidx.media3:media3-exoplayer-dash:1.1.1")
+    implementation ("androidx.media3:media3-ui:1.1.1")
+
 }

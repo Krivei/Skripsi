@@ -70,7 +70,6 @@ class WeightLogFragment : Fragment(R.layout.fragment_weight_log) {
                     recyclerView = view?.findViewById(R.id.rvWeightLog)
                     recyclerView?.layoutManager = GridLayoutManager(activity,2)
                     recyclerView?.setHasFixedSize(true)
-
                     recyclerView?.adapter = WeightLogAdapter(it)
                 }
             }

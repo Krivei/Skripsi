@@ -33,6 +33,7 @@ class SplitListFragment() : Fragment(R.layout.fragment_split_list) {
         if (data != null) {
             requireArguments().getStringArray("splitID")?.toMutableList()?.let {
                 if (it != null){
+                    Log.i("IT", it.toString())
                     splitViewModel.getSplit(it)
                 }else{
                     Log.i("Test", "Split: Gagal")

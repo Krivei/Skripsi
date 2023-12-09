@@ -9,3 +9,4 @@ data class WeightLog(val UserId: String, val URL: String, val Weight: Double, va
     constructor() : this("", "", 0.0) // default constructor needed for firebase
 
 }
+

@@ -1,10 +1,14 @@
 package com.example.personalrecordv4.adapter
 
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.personalrecordv4.ExerciseFragment
 import com.example.personalrecordv4.R
 import com.example.personalrecordv4.model.Split
 
@@ -28,7 +32,23 @@ class SplitAdapter(private val splitList: MutableList<Split>) : RecyclerView.Ada
         val currentItem = splitList[position]
         holder.SplitTitle.text = currentItem.name
         holder.itemView.setOnClickListener {
-
+            var exerciseId: Array<String> = arrayOf()
+            if (currentItem.ExerciseId.contains("")){
+                Log.i("Exercise Error", "Contains Empty Exercise")
+            } else {
+                currentItem.ExerciseId.forEach {
+                    exerciseId+=it
+                }
+                val args = Bundle()
+                args.putStringArray("exerciseId", exerciseId)
+                val fragment = ExerciseFragment()
+                fragment.arguments = args
+                val fragmentManager = (holder.itemView.context as AppCompatActivity).supportFragmentManager
+                val fragmentTransaction = fragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
+                fragmentTransaction.addToBackStack(null)
+                fragmentTransaction.commit()
+            }
         }
     }
 }
