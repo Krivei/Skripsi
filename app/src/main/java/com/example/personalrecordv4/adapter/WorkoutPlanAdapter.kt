@@ -42,18 +42,22 @@ class WorkoutPlanAdapter(private val workoutPlanList: MutableList<WorkoutPlan>) 
         holder.itemView.setOnClickListener {
             Log.i("Test", "Clicked: $currentItem")
             var spltids: Array<String> = arrayOf()
-            currentItem.SplitId.forEach {
-                spltids += it
+            if (currentItem.SplitId.contains("")){
+                Log.i("Split Error", "Split is Empty")
+            } else {
+                currentItem.SplitId.forEach {
+                    spltids += it
+                }
+                val args =  Bundle()
+                args.putStringArray("splitID", spltids)
+                val fragment = SplitListFragment()
+                fragment.arguments = args
+                val fragmentManager = (holder.itemView.context as AppCompatActivity).supportFragmentManager
+                val fragmentTransaction = fragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
+                fragmentTransaction.addToBackStack(null)
+                fragmentTransaction.commit()
             }
-            val args =  Bundle()
-            args.putStringArray("splitID", spltids)
-            val fragment = SplitListFragment()
-            fragment.arguments = args
-            val fragmentManager = (holder.itemView.context as AppCompatActivity).supportFragmentManager
-            val fragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
-            fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commit()
         }
     }
 }

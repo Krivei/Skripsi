@@ -6,35 +6,49 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:background="@color/white"
+
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="100dp"
         android:background="@drawable/rounded"
         android:padding="15dp"
         >
 
         <TextView
-            android:id="@+id/tvPlanType"
+            android:id="@+id/tvNameHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Plan Type"
-            android:textSize="20sp"
+            android:text="Workout Name"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:textStyle="bold"
+            android:textSize="14sp"
+
+            />
 
         <TextView
-            android:id="@+id/tvPlanName"
+            android:id="@+id/textView16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Plan title"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="TextView"
+            app:layout_constraintStart_toStartOf="@+id/tvNameHistory"
+            app:layout_constraintTop_toBottomOf="@+id/tvNameHistory" />
+
+        <TextView
+            android:id="@+id/tvWorkoutDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
