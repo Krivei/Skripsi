@@ -11,18 +11,27 @@ import com.google.firebase.ktx.Firebase
 class ExerciseRepository {
     var _listExercise : MutableLiveData<MutableList<Exercise>?> = MutableLiveData(mutableListOf())
     var _listTutorial : MutableLiveData<MutableList<Exercise>> = MutableLiveData(mutableListOf())
+    val _tutorial: MutableLiveData<Exercise> = MutableLiveData()
     var _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     private val db = Firebase.firestore.collection("Exercise")
     private val uid = Firebase.auth.currentUser!!.uid
 
     fun getTutorial(){
-        db.whereArrayContains("MuscleType","Chest - Middle").get().addOnSuccessListener {documents ->
+        db.whereNotEqualTo("MuscleType","").get().addOnSuccessListener {documents ->
             val listTutorial = mutableListOf<Exercise>()
-            val listInstruksi = mutableListOf<String>()
             for (document in documents){
                 val tutorial = document.toObject<Exercise>()
-                listTutorial.add(tutorial)
-
+                var duplicate = false
+                //check duplicate
+                for (tmp in listTutorial){
+                    if (tutorial.Name==tmp.Name){
+                        duplicate = true
+                        break
+                    }
+                }
+                if (duplicate==false){
+                    listTutorial.add(tutorial)
+                }
             }
             _listTutorial.postValue(listTutorial)
             _isLoading.postValue(false)
@@ -32,7 +41,20 @@ class ExerciseRepository {
         }
 
     }
-
+    fun getSingleTutorial( nama: String){
+        Log.i("Get", "Single Tutorial")
+        db.whereEqualTo("Name",nama).limit(1).get().addOnSuccessListener {documents ->
+            if (documents.isEmpty()){
+                Log.i("Get", "Document Not Found")
+            } else {
+                val x = documents.first()
+                val stutorial = x.toObject<Exercise>()
+                _tutorial.postValue(stutorial)
+                Log.i("WOI",stutorial.Name)
+                _isLoading.postValue(false)
+            }
+        }
+    }
     fun getExercise(mutableList: MutableList<String>){
         _isLoading.postValue(true)
         _listExercise.postValue(mutableListOf())
@@ -49,7 +71,7 @@ class ExerciseRepository {
                 }
                 _listExercise.postValue(listExercise)
                 _isLoading.postValue(false)
-            }.addOnSuccessListener { exception ->
+            }.addOnFailureListener { exception ->
                 Log.w("Exercise", "Error getting exercisesss")
                 _isLoading.postValue(false)
                 _listExercise.postValue(null)
