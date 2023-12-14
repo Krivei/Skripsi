@@ -1,7 +1,7 @@
 package com.example.personalrecordv4.model
 
-data class Exercise(val Name: String, val TutorialVid: String, val MuscleType: MutableList<String>,
-                    val Instruction: MutableList<String>, val DefaultSets: Int, val DefaultReps: Int){
+data class Exercise(val name: String, val tutorialVid: String, val muscleType: MutableList<String>,
+                    val instruction: MutableList<String>, val defaultSets: Int, val defaultReps: Int){
     constructor() : this("","", mutableListOf(), mutableListOf(), 3, 10)
 
 }

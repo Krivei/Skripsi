@@ -1,12 +1,14 @@
 package com.example.personalrecordv4.model
 
 
-import java.sql.Timestamp
 
+
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.PropertyName
 import java.util.Date
 
-data class WeightLog(val UserId: String, val URL: String, val Weight: Double, val Created_at : Date = Date()){
-    constructor() : this("", "", 0.0) // default constructor needed for firebase
+data class WeightLog(val userId: String, val url: String,val weight: Double,val created_at: Timestamp){
+    constructor() : this("", "", 0.0, Timestamp.now()) // default constructor needed for firebase
 
 }
 

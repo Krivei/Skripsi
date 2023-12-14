@@ -18,9 +18,7 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.etEditName.setText(intent.getStringExtra(EXTRA_NAMA))
-
         binding.btnSaveProfile.setOnClickListener{
             userViewModel.editData(binding.etEditName.text.toString().trim(), binding.etEditPassword.text.toString().trim())
         }

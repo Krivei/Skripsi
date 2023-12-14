@@ -17,14 +17,14 @@ class ExerciseRepository {
     private val uid = Firebase.auth.currentUser!!.uid
 
     fun getTutorial(){
-        db.whereNotEqualTo("MuscleType","").get().addOnSuccessListener {documents ->
+        db.whereNotEqualTo("muscleType","").get().addOnSuccessListener {documents ->
             val listTutorial = mutableListOf<Exercise>()
             for (document in documents){
                 val tutorial = document.toObject<Exercise>()
                 var duplicate = false
                 //check duplicate
                 for (tmp in listTutorial){
-                    if (tutorial.Name==tmp.Name){
+                    if (tutorial.name==tmp.name){
                         duplicate = true
                         break
                     }
@@ -43,14 +43,14 @@ class ExerciseRepository {
     }
     fun getSingleTutorial( nama: String){
         Log.i("Get", "Single Tutorial")
-        db.whereEqualTo("Name",nama).limit(1).get().addOnSuccessListener {documents ->
+        db.whereEqualTo("name",nama).limit(1).get().addOnSuccessListener {documents ->
             if (documents.isEmpty()){
                 Log.i("Get", "Document Not Found")
             } else {
                 val x = documents.first()
                 val stutorial = x.toObject<Exercise>()
                 _tutorial.postValue(stutorial)
-                Log.i("WOI",stutorial.Name)
+
                 _isLoading.postValue(false)
             }
         }

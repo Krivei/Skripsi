@@ -1,15 +1,11 @@
 package com.example.personalrecordv4.adapter
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
-import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.media3.exoplayer.ExoPlayer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.personalrecordv4.R
 import com.example.personalrecordv4.TutorialDetailFragment
@@ -34,18 +30,11 @@ class TutorialAdapter(private val tutorialList: MutableList<Exercise>) : Recycle
 
     override fun onBindViewHolder(holder: TutorialViewHolder, position: Int) {
         val currentItem = tutorialList[position]
-        holder.ExerciseName.text = currentItem.Name
-        holder.MuscleType.text = currentItem.MuscleType.toString()
-//        holder.Instruksi.text = currentItem.Instruction.joinToString("\n")
-//        holder.btnTutorial.text = ("Try ${currentItem.Name}")
-//        holder.TutorialVid.setVideoURI(Uri.parse(currentItem.TutorialVid))
-//        holder.TutorialVid.setOnPreparedListener {
-//            it.setLooping(true)
-//            it.start()
-//        }
+        holder.ExerciseName.text = currentItem.name
+        holder.MuscleType.text = currentItem.muscleType.toString()
         holder.itemView.setOnClickListener {
             val args = Bundle()
-            args.putString("exercise", currentItem.Name)
+            args.putString("exercise", currentItem.name)
             val fragment = TutorialDetailFragment()
             fragment.arguments = args
             val fragmentManager = (holder.itemView.context as AppCompatActivity).supportFragmentManager

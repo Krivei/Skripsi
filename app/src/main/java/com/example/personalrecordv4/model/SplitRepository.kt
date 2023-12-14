@@ -1,7 +1,6 @@
 package com.example.personalrecordv4.model
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.ktx.firestore
@@ -26,7 +25,7 @@ class SplitRepository {
                 val listSplit: MutableList<Split> = mutableListOf()
                 for (document in documents) {
                     val split = document.toObject<Split>()
-                    for (items in split.ExerciseId){
+                    for (items in split.exerciseId){
                     }
                     listSplit.add(split)
                 }

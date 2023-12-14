@@ -6,6 +6,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldPath
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 
 class WorkoutPlanRepository() {
@@ -13,7 +14,6 @@ class WorkoutPlanRepository() {
     var isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
 
     private val db = Firebase.firestore.collection("WorkoutPlan")
-
 
     fun addWorkoutPlan(workoutPlan: WorkoutPlan) {
         db.document().set(workoutPlan).addOnSuccessListener { documentReference ->
@@ -27,7 +27,6 @@ class WorkoutPlanRepository() {
     fun getWorkoutPlan(workoutPlan: MutableList<String>) {
         isLoading.postValue(true)
         db.whereIn(FieldPath.documentId(), workoutPlan).get().addOnSuccessListener { documents ->
-
            val listWorkoutPlan = mutableListOf<WorkoutPlan>()
             for (document in documents) {
                 val workoutPlan = document.toObject<WorkoutPlan>()
