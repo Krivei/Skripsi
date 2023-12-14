@@ -39,4 +39,8 @@ class WeightLogViewModel : ViewModel() {
     fun getDetails(url: String){
         repo.getDetails(url)
     }
+
+    fun deleteLog(url: String){
+        repo.deleteLog(url)
+    }
 }

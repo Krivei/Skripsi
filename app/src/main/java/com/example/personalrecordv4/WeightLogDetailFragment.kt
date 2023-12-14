@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
@@ -63,7 +64,13 @@ class WeightLogDetailFragment : Fragment(R.layout.fragment_weight_log_detail) {
                     builder.setMessage("Delete this log?")
                     builder.setPositiveButton("Yes", DialogInterface.OnClickListener { dialog, _ ->
                         //No Logic Yet
+                        weightLogViewModel.deleteLog(weightLogViewModel.weightLog.value!!.url)
                         dialog.dismiss()
+                        val fragmentTransaction = requireFragmentManager().beginTransaction()
+                        val fragment = WeightLogFragment()
+                        fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
+                        fragmentTransaction.addToBackStack(null)
+                        fragmentTransaction.commit()
                     })
                     builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, _ ->
                         dialog.dismiss()

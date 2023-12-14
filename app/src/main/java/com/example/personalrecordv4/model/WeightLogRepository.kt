@@ -25,19 +25,25 @@ class WeightLogRepository() {
     private val uid = Firebase.auth.currentUser!!.uid
 
     fun getWeightLog(){
-        db.whereEqualTo("userId",uid).orderBy("created_at", Query.Direction.DESCENDING).get().addOnSuccessListener{ documents ->
+        db.whereEqualTo("userId",uid).orderBy("created_at", Query.Direction.DESCENDING).addSnapshotListener{ documents, exception ->
 
             val listWeightLog = mutableListOf<WeightLog>()
 
-            for (document in documents){
-                val weightLog = document.toObject<WeightLog>()
-                listWeightLog.add(weightLog)
+            if (documents != null) {
+                for (document in documents){
+                    val weightLog = document.toObject<WeightLog>()
+                    listWeightLog.add(weightLog)
+                }
+                _listWeightLog.postValue(listWeightLog)
+                _isLoading.postValue(false)
+            } else {
+                Log.i("WeightLogRepository", "Snapshot Empty")
             }
-            _listWeightLog.postValue(listWeightLog)
-            _isLoading.postValue(false)
-        }.addOnFailureListener { exception ->
-            Log.w("WeightLog", "Error getting documents: ", exception)
+
         }
+//            .addOnFailureListener { exception ->
+//            Log.w("WeightLog", "Error getting documents: ", exception)
+//        }
     }
 
     fun addWeightLog(bitmap: Bitmap, berat: Double){
@@ -77,6 +83,30 @@ class WeightLogRepository() {
                 _isLoading.postValue(false)
             }
         }
+    }
+    
+    fun deleteLog(url: String){
+        //Delete document from firestore
+        Log.i("DeleteLog","Delete Start")
+        db.whereEqualTo("url",url).get().addOnCompleteListener { task ->
+            if (task.isSuccessful){
+                Log.i("DeleteLog","Document Deletion Success")
+                for (document in task.result!!.documents){
+                    document.reference.delete()
+                }
+            }
+        }
+        val regex = "^https://firebasestorage.googleapis.com/v0/b/(.*)/o/(.*).*$".toRegex()
+        val match = regex.find(url)?:return
+        val storage = FirebaseStorage.getInstance()
+        storage.reference.child(match.groupValues[1]).child(match.groupValues[2]).delete()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful){
+                    Log.i("WeightLogRepository", "Deleted")
+                } else {
+                    Log.i("WeightLogRepository", "Failed")
+                }
+            }
     }
 
 

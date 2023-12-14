@@ -77,5 +77,7 @@ class ExerciseRepository {
                 _listExercise.postValue(null)
             }
         }
+
+
     }
 }
