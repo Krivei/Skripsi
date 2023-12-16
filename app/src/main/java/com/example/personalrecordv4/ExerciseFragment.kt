@@ -33,33 +33,32 @@ class ExerciseFragment : Fragment(R.layout.fragment_exercise) {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val data=arguments
-        Log.i("Test", "Exercise ${requireArguments().getStringArray("exerciseId")}")
+        Log.i("ExerciseFragment", "Exercise ${requireArguments().getStringArray("exerciseId")}")
         if (data!=null){
             requireArguments().getStringArray("exerciseId")?.toMutableList()?.let {
                 if (it!=null){
                     exerciseViewModel.getExercise(it)
                 } else {
-                    Log.i("Test", "Exercise: Gagal")
+                    Log.i("ExerciseFragment", "Exercise: Gagal")
                 }
             }
         }
         val progressBar = view?.findViewById<ProgressBar>(R.id.progress_loader)
         exerciseViewModel.isLoadingData.observe(viewLifecycleOwner, Observer{
             if (it==null){
-                Log.i("Test", "Load Failed")
+                Log.i("ExerciseFragment", "Load Failed")
             } else {
                 if (it){
                     progressBar?.visibility = View.VISIBLE
                 } else {
-                    progressBar?.visibility
+                    progressBar?.visibility = View.GONE
                 }
             }
         })
         exerciseViewModel.listExercise.observe(viewLifecycleOwner, Observer<MutableList<Exercise>?>{
             if (it==null){
-                Log.i("Test","Split: Gagal")
+                Log.i("ExerciseFragment","Split: Gagal")
             } else {
                 recyclerView.apply {
                     recyclerView = view?.findViewById(R.id.rvExercise)

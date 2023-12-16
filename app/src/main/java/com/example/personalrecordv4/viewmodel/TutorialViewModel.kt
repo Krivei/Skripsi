@@ -8,6 +8,7 @@ import com.example.personalrecordv4.model.ExerciseRepository
 class TutorialViewModel : ViewModel(){
     private var _listTutorial: MutableLiveData<MutableList<Exercise>> = MutableLiveData()
     private var _isLoading: MutableLiveData<Boolean> = MutableLiveData()
+    private var _tutorial: MutableLiveData<Exercise> = MutableLiveData()
     private var repo = ExerciseRepository()
 
     val isLoading: MutableLiveData<Boolean>
@@ -15,14 +16,22 @@ class TutorialViewModel : ViewModel(){
 
     val listTutorial: MutableLiveData<MutableList<Exercise>>
         get() = _listTutorial
-
+    val tutorial: MutableLiveData<Exercise>
+        get() = _tutorial
     init {
         _listTutorial = repo._listTutorial
         _isLoading = repo._isLoading
+        _tutorial = repo._tutorial
     }
+
+
 
     fun getTutorial(){
         repo.getTutorial()
+    }
+
+    fun getSingleTutorial(nama: String){
+        repo.getSingleTutorial(nama)
     }
 
 }

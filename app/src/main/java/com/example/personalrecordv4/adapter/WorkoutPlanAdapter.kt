@@ -7,13 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.recyclerview.widget.RecyclerView
 import com.example.personalrecordv4.R
 import com.example.personalrecordv4.SplitListFragment
 import com.example.personalrecordv4.model.WorkoutPlan
-import com.example.personalrecordv4.viewmodel.SplitViewModel
 
 class WorkoutPlanAdapter(private val workoutPlanList: MutableList<WorkoutPlan>) : RecyclerView.Adapter<WorkoutPlanAdapter.WorkoutPlanViewHolder>(){
     inner class WorkoutPlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -37,15 +34,15 @@ class WorkoutPlanAdapter(private val workoutPlanList: MutableList<WorkoutPlan>) 
 
     override fun onBindViewHolder(holder: WorkoutPlanViewHolder, position: Int) {
         val currentItem = workoutPlanList[position]
-        holder.WorkoutPlanTitle.text = currentItem.Name
-        holder.WorkoutPlanType.text = currentItem.Type
+        holder.WorkoutPlanTitle.text = currentItem.name
+        holder.WorkoutPlanType.text = currentItem.type
         holder.itemView.setOnClickListener {
             Log.i("Test", "Clicked: $currentItem")
             var spltids: Array<String> = arrayOf()
-            if (currentItem.SplitId.contains("")){
+            if (currentItem.splitId.contains("")){
                 Log.i("Split Error", "Split is Empty")
             } else {
-                currentItem.SplitId.forEach {
+                currentItem.splitId.forEach {
                     spltids += it
                 }
                 val args =  Bundle()

@@ -1,5 +1,7 @@
 package com.example.personalrecordv4.model
 
-data class WorkoutPlan(val Name: String, val Type: String, val SplitId: MutableList<String>){
-    constructor() : this("", "", mutableListOf()) // default constructor needed for firebase
+import com.google.firebase.Timestamp
+
+data class WorkoutPlan(val name: String, val type: String, val splitId: MutableList<String>, val timestamp: Timestamp){
+    constructor() : this("", "", mutableListOf(), Timestamp.now()) // default constructor needed for firebase
  }

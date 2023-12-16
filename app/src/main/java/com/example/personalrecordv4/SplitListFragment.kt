@@ -29,14 +29,14 @@ class SplitListFragment() : Fragment(R.layout.fragment_split_list) {
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
         val data = arguments
-        Log.i("Test", "Split: ${requireArguments().getStringArray("splitID")}")
+        Log.i("SplitListFragment", "Split: ${requireArguments().getStringArray("splitID")}")
         if (data != null) {
             requireArguments().getStringArray("splitID")?.toMutableList()?.let {
                 if (it != null){
-                    Log.i("IT", it.toString())
+                    Log.i("SplitListFragment", it.toString())
                     splitViewModel.getSplit(it)
                 }else{
-                    Log.i("Test", "Split: Gagal")
+                    Log.i("SplitListFragment", "Split: Gagal")
                 }
             }
         }
@@ -44,7 +44,7 @@ class SplitListFragment() : Fragment(R.layout.fragment_split_list) {
         val progressBar = view?.findViewById<ProgressBar>(R.id.progress_loader)
         splitViewModel.isLoadingData.observe(viewLifecycleOwner, Observer {
             if(it == null){
-                Log.i("Test", "Loading: Gagal")
+                Log.i("SplitListFragment", "Loading: Gagal")
             }else{
                 if(it){
                     progressBar?.visibility = View.VISIBLE
@@ -55,7 +55,7 @@ class SplitListFragment() : Fragment(R.layout.fragment_split_list) {
         })
         splitViewModel.splitData.observe(viewLifecycleOwner, Observer<MutableList<Split>?>{
             if(it == null){
-                Log.i("Test", "WorkoutPlan: Gagal")
+                Log.i("SplitListFragment", "WorkoutPlan: Gagal")
             }else{
                 recyclerView.apply {
                     // set a LinearLayoutManager to handle Android

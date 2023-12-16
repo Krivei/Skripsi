@@ -22,7 +22,7 @@ class ExerciseAdapter(private val exerciseList: MutableList<Exercise>) : Recycle
 
     override fun onBindViewHolder(holder: ExerciseAdapter.ExerciseViewHolder, position: Int) {
         val currentItem = exerciseList[position]
-        holder.ExerciseTitle.text = currentItem.Name
+        holder.ExerciseTitle.text = currentItem.name
     }
 
     override fun getItemCount(): Int {

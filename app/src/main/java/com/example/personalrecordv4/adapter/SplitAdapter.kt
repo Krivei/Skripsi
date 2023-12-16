@@ -33,10 +33,10 @@ class SplitAdapter(private val splitList: MutableList<Split>) : RecyclerView.Ada
         holder.SplitTitle.text = currentItem.name
         holder.itemView.setOnClickListener {
             var exerciseId: Array<String> = arrayOf()
-            if (currentItem.ExerciseId.contains("")){
-                Log.i("Exercise Error", "Contains Empty Exercise")
+            if (currentItem.exerciseId.contains("")){
+                Log.i("SplitAdapter", "Contains Empty Exercise")
             } else {
-                currentItem.ExerciseId.forEach {
+                currentItem.exerciseId.forEach {
                     exerciseId+=it
                 }
                 val args = Bundle()
