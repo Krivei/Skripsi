@@ -17,7 +17,7 @@ import java.io.ByteArrayOutputStream
 import java.util.Date
 import java.util.UUID
 
-class WeightLogRepository() {
+class WeightLogRepository {
     var _listWeightLog : MutableLiveData<MutableList<WeightLog>> = MutableLiveData(mutableListOf())
     var _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     var _WeightLog: MutableLiveData<WeightLog> = MutableLiveData()
@@ -74,7 +74,7 @@ class WeightLogRepository() {
 
     fun getDetails(url: String){
         db.whereEqualTo("url",url).get().addOnSuccessListener {documents ->
-            if (documents.isEmpty()){
+            if (documents.isEmpty){
                 Log.i("WeightLogRepository","Document is Empty")
             } else {
                 val x = documents.first()
@@ -88,25 +88,28 @@ class WeightLogRepository() {
     fun deleteLog(url: String){
         //Delete document from firestore
         Log.i("DeleteLog","Delete Start")
-        db.whereEqualTo("url",url).get().addOnCompleteListener { task ->
-            if (task.isSuccessful){
-                Log.i("DeleteLog","Document Deletion Success")
-                for (document in task.result!!.documents){
-                    document.reference.delete()
-                }
-            }
-        }
         val regex = "^https://firebasestorage.googleapis.com/v0/b/(.*)/o/(.*).*$".toRegex()
         val match = regex.find(url)?:return
-        val storage = FirebaseStorage.getInstance()
-        storage.reference.child(match.groupValues[1]).child(match.groupValues[2]).delete()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful){
-                    Log.i("WeightLogRepository", "Deleted")
-                } else {
-                    Log.i("WeightLogRepository", "Failed")
+        val urlimg = match.groupValues[2].replace("%2F","/")
+        urlimg.substringAfter("%2F").substringBefore("?alt").let {
+            Log.i("WeightLogRepository", it)
+            FirebaseStorage.getInstance().reference.child(it).delete()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        db.whereEqualTo("url",url).get().addOnCompleteListener { task ->
+                            if (task.isSuccessful){
+                                Log.i("DeleteLog","Document Deletion Success")
+                                for (document in task.result!!.documents){
+                                    document.reference.delete()
+                                }
+                            }
+                        }
+                        Log.i("WeightLogRepository", "Deleted")
+                    } else {
+                        Log.i("WeightLogRepository", "Failed")
+                    }
                 }
-            }
+        }
     }
 
 

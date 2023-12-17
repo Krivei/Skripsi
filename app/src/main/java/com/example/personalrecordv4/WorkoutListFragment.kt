@@ -1,5 +1,6 @@
 package com.example.personalrecordv4
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import com.example.personalrecordv4.viewmodel.UserViewModel
 import com.example.personalrecordv4.adapter.WorkoutPlanAdapter
 import com.example.personalrecordv4.databinding.FragmentProfileBinding
 import com.example.personalrecordv4.viewmodel.WorkoutPlanViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * A simple [Fragment] subclass.
@@ -26,7 +28,6 @@ import com.example.personalrecordv4.viewmodel.WorkoutPlanViewModel
 class WorkoutListFragment : Fragment(R.layout.fragment_workout_list) {
     private val userViewModel : UserViewModel by activityViewModels()
     private var recyclerView : RecyclerView? = null
-    private lateinit var btnAddWorkout : Button
     private val workoutViewModel : WorkoutPlanViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +50,11 @@ class WorkoutListFragment : Fragment(R.layout.fragment_workout_list) {
     }
     override fun onViewCreated(itemView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(itemView, savedInstanceState)
-//        btnAddWorkout.findViewById<Button>(R.id.addWorkoutBtn)
-//        btnAddWorkout.setOnClickListener {
-////            val intent = Intent(activity, AddWorkoutActivity::class.java)
-////            startActivity(intent)
-//        }
+        val addWorkoutBtn = itemView.findViewById<FloatingActionButton>(R.id.addWorkout)
+        addWorkoutBtn.setOnClickListener {
+            val intent = Intent(activity, AddWorkoutPlanActivity::class.java)
+            startActivity(intent)
+        }
         var progressBar = view?.findViewById<ProgressBar>(R.id.progress_loader)
         workoutViewModel.isLoadingData.observe(viewLifecycleOwner, Observer {
             if(it == null){
