@@ -43,4 +43,12 @@ class WeightLogViewModel : ViewModel() {
     fun deleteLog(url: String){
         repo.deleteLog(url)
     }
+
+    fun isWeightValid(berat: Double) : Boolean {
+        return berat > 0.0
+    }
+
+    fun isWeightEmpty(berat: String) : Boolean {
+        return (berat.isNotBlank())
+    }
 }
