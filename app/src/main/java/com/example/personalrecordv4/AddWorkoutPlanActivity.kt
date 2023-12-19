@@ -11,9 +11,15 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 
 class AddWorkoutPlanActivity : AppCompatActivity(){
+
+
+    private val REQUEST_CODE = 123
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_create_workout)
@@ -69,8 +75,25 @@ class AddWorkoutPlanActivity : AppCompatActivity(){
             val radioButton = findViewById<View>(checkedRadioButtonId) as Button
             val repetition = setRepetition.text.toString()
             val set = setSet.text.toString()
-
+            val intent = Intent(this, BuildPlanAcitvity::class.java)
+            intent.putExtra("workoutName", workoutname.toString())
+            intent.putExtra("repetition", repetition)
+            intent.putExtra("set", set)
+            intent.putExtra("split", split)
+            startActivity(intent)
         })
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE ) {
+            if (data != null) {
+                if (data.hasExtra("myData1")) {
+                    Toast.makeText(this, data.extras?.getString("myData1"),
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 }

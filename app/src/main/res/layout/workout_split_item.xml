@@ -24,7 +24,16 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-             />
+        <TextView
+            android:id="@+id/split_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Plan Type"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/split_number" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

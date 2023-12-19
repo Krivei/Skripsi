@@ -15,13 +15,20 @@ class ExerciseViewModel : ViewModel() {
 
     val listExercise: MutableLiveData<MutableList<Exercise>?>
         get() = _listExercise
+    var listId: MutableLiveData<MutableList<String>>
+        get() = repo._listId
 
     init{
         _listExercise = repo._listExercise
+        listId = repo._listId
         isLoading = repo._isLoading
     }
 
     fun getExercise(mutableList: MutableList<String>){
         repo.getExercise(mutableList)
+    }
+
+    fun getExerciseIdByName(mutableList: MutableList<String>){
+        repo.getExerciseIdFromName(mutableList)
     }
 }

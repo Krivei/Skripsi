@@ -11,6 +11,7 @@ import com.google.firebase.ktx.Firebase
 class ExerciseRepository {
     var _listExercise : MutableLiveData<MutableList<Exercise>?> = MutableLiveData(mutableListOf())
     var _listTutorial : MutableLiveData<MutableList<Exercise>> = MutableLiveData(mutableListOf())
+    var _listId : MutableLiveData<MutableList<String>> = MutableLiveData(mutableListOf())
     val _tutorial: MutableLiveData<Exercise> = MutableLiveData()
     var _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     private val db = Firebase.firestore.collection("Exercise")
@@ -44,7 +45,7 @@ class ExerciseRepository {
     fun getSingleTutorial( nama: String){
         Log.i("Get", "Single Tutorial")
         db.whereEqualTo("name",nama).limit(1).get().addOnSuccessListener {documents ->
-            if (documents.isEmpty()){
+            if (documents.isEmpty){
                 Log.i("Get", "Document Not Found")
             } else {
                 val x = documents.first()
@@ -77,7 +78,17 @@ class ExerciseRepository {
                 _listExercise.postValue(null)
             }
         }
+    }
 
-
+    fun getExerciseIdFromName(mutableList: MutableList<String>) {
+        var id:MutableList<String> = mutableListOf()
+        db.whereIn("name",mutableList).get().addOnSuccessListener { documents ->
+                for (document in documents) {
+                    id.add(document.id)
+                }
+            _listId.postValue(id)
+        }.addOnFailureListener { exception ->
+                Log.w("Exercise", "Error getting documents: ", exception)
+            }
     }
 }

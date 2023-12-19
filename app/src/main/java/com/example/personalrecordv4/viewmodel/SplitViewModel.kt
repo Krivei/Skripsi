@@ -17,13 +17,20 @@ class SplitViewModel: ViewModel() {
 
     val splitData: MutableLiveData<MutableList<Split>?>
         get() = _listSplit
+    var newaddedid: String
+        get() = repo.newaddedid
+
     init {
         _listSplit = repo._listSplit
         isLoading = repo.isLoading
+        newaddedid = repo.newaddedid
     }
 
     fun getSplit(mutableList: MutableList<String>) {
         repo.getSplit(mutableList)
     }
 
+    fun addSplit(split: Split) {
+        repo.addSplit(split)
+    }
 }

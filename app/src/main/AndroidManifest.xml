@@ -44,6 +44,7 @@
         <activity android:name=".AddWorkoutPlanActivity"></activity>
         <activity android:name=".BuildWorkoutActivities"></activity>
         <activity android:name=".BuildPlanAcitvity"></activity>
+        <activity android:name=".AddExerciseWorkPlan"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="false" />
