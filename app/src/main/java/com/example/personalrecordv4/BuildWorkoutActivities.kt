@@ -19,8 +19,6 @@ class BuildWorkoutActivities : AppCompatActivity(){
         var repetition = intent.getStringExtra("repetition")
         var set = intent.getStringExtra("set")
         val tvWorkoutPlanName = findViewById<View>(R.id.tvWorkoutPlanName) as TextView
-        val tvSplitNumber = findViewById<View>(R.id.tvSplitNumber) as TextView
         tvWorkoutPlanName.text = workoutname
-        tvSplitNumber.text = splitnumber
         }
 }
