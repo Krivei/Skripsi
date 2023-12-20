@@ -26,32 +26,21 @@
             app:srcCompat="@drawable/backbutton" />
 
         <TextView
-            android:id="@+id/tvWorkoutPlanName"
+            android:id="@+id/tvSplitName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
             android:text="Nama Workout Plan"
             android:textColor="@color/white"
             android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tvSplitNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nomor Split"
-            android:textColor="@color/white"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvWorkoutPlanName" />
-
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/add_exercise_split_done"
             android:layout_width="45dp"
             android:layout_height="45dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -72,7 +61,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/btnAddExercise"
+            android:id="@+id/btnAddExerciseWork"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#AED2FF"

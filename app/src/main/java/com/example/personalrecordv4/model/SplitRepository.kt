@@ -10,6 +10,7 @@ import com.google.firebase.ktx.Firebase
 class SplitRepository {
     var _listSplit: MutableLiveData<MutableList<Split>?> = MutableLiveData(mutableListOf())
     var isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
+    var newaddedid: String = ""
     private var db = Firebase.firestore.collection("Split")
 
 
@@ -38,6 +39,18 @@ class SplitRepository {
             }
         }
 
+    }
+
+    fun addSplit(split: Split) {
+        isLoading.postValue(true)
+        Log.i("splitmutable", "Split: Sukses $split")
+        db.add(split).addOnSuccessListener {
+            newaddedid = it.id
+            Log.i("idsplit", "Split: Sukses ${it.id}")
+            isLoading.postValue(false)
+        }.addOnFailureListener {
+            isLoading.postValue(false)
+        }
     }
 
 }

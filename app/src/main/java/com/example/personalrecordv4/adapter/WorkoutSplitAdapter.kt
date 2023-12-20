@@ -1,21 +1,26 @@
 package com.example.personalrecordv4.adapter
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.personalrecordv4.listener.onItemClickListener
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.impl.utils.ContextUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.personalrecordv4.AddExerciseSplitFragment
+import com.example.personalrecordv4.AddExerciseWorkPlan
 import com.example.personalrecordv4.R
 
-class WorkoutSplitAdapter(splitnumber: Array<Char>) : RecyclerView.Adapter<WorkoutSplitAdapter.WorkoutSplitViewHolder>() {
+class WorkoutSplitAdapter(splitnumber: Array<Char>,splitid: MutableList<String>, val itemClick: onItemClickListener) : RecyclerView.Adapter<WorkoutSplitAdapter.WorkoutSplitViewHolder>() {
     private val splitnumber = splitnumber
+    private val splitid = splitid
 
     inner class WorkoutSplitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val WorkoutSplitTitle: TextView = itemView.findViewById(
             R.id.split_number)
+        val WorkoutSplitId: TextView = itemView.findViewById(R.id.split_id)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkoutSplitViewHolder {
@@ -29,16 +34,13 @@ class WorkoutSplitAdapter(splitnumber: Array<Char>) : RecyclerView.Adapter<Worko
 
     override fun onBindViewHolder(holder: WorkoutSplitViewHolder, position: Int) {
         holder.WorkoutSplitTitle.text = "Split ${position+1}"
+        if (splitid.size == 0){
+            holder.WorkoutSplitId.text = "0"
+        }else {
+            holder.WorkoutSplitId.text = splitid[position]
+        }
         holder.itemView.setOnClickListener {
-            val args =  Bundle()
-            args.putString("splitnumber", splitnumber[position+1].toString())
-            val fragments = AddExerciseSplitFragment()
-            fragments.arguments = args
-            val fragmentManager = (holder.itemView.context as AppCompatActivity).supportFragmentManager
-            val fragmentTransaction = fragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragmentContainerView, fragments)
-            fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commit()
+              itemClick.OnItemClick(position)
         }
     }
 
