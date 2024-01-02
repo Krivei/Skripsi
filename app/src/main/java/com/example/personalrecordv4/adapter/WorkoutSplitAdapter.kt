@@ -1,16 +1,11 @@
 package com.example.personalrecordv4.adapter
 
-import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.personalrecordv4.listener.onItemClickListener
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.impl.utils.ContextUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.personalrecordv4.AddExerciseWorkPlan
 import com.example.personalrecordv4.R
 
 class WorkoutSplitAdapter(splitnumber: Array<Char>,splitid: MutableList<String>, val itemClick: onItemClickListener) : RecyclerView.Adapter<WorkoutSplitAdapter.WorkoutSplitViewHolder>() {
@@ -35,7 +30,7 @@ class WorkoutSplitAdapter(splitnumber: Array<Char>,splitid: MutableList<String>,
     override fun onBindViewHolder(holder: WorkoutSplitViewHolder, position: Int) {
         holder.WorkoutSplitTitle.text = "Split ${position+1}"
         if (splitid.size == 0){
-            holder.WorkoutSplitId.text = "0"
+            holder.WorkoutSplitId.text = "1"
         }else {
             holder.WorkoutSplitId.text = splitid[position]
         }

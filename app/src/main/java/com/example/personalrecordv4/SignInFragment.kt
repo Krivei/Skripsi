@@ -30,11 +30,11 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             val password = binding.ETPassword.text.toString().trim()
 
             if(!userViewModel.isEmailValid(email)){
-                binding.ETEmail.error = "Wrong Email!"
+                binding.ETEmail.error = "Please Type Your Email"
                 return@setOnClickListener
             }
             if (!userViewModel.isPasswordValid(password)){
-                binding.ETPassword.error = "Wrong Password!"
+                binding.ETPassword.error = "Please Type Your Password"
                 return@setOnClickListener
             }
             userViewModel.signIn(email, password)

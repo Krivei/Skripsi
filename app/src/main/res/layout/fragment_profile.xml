@@ -45,6 +45,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="560dp"
         android:layout_marginBottom="2dp"
@@ -125,11 +126,12 @@
                     android:textStyle="bold" />
 
                 <Button
+                    android:backgroundTint="#3C699F"
+
                     android:id="@+id/btnEditProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
-                    android:background="@drawable/rounded2"
                     android:text="Change Information and Credentials"
 
                     />
@@ -141,6 +143,7 @@
             android:id="@+id/constraintLayout3"
             android:layout_width="350dp"
             android:layout_height="150dp"
+            android:padding="10dp"
             android:background="@drawable/rounded"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -149,19 +152,53 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
             app:layout_constraintVertical_bias="0.08">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvNotifs"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:listitem="@layout/notif_item" />
+
+            <Button
+                android:id="@+id/btnEditReminder"
+                android:layout_width="wrap_content"
+                android:backgroundTint="#3C699F"
+                android:layout_height="wrap_content"
+                android:text="Edit Reminder"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/rvNotifs"
+                app:layout_constraintTop_toBottomOf="@+id/rvNotifs" />
+
+            <TextView
+                android:id="@+id/tvNotifTime"
+
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:background="@drawable/rounded2"
+                android:gravity="center"
+                android:text="Time"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btnEditReminder"
+                app:layout_constraintStart_toStartOf="@+id/rvNotifs"
+                app:layout_constraintTop_toBottomOf="@+id/rvNotifs" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/btnSignout"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded2"
+            android:backgroundTint="#3C699F"
             android:text="Sign Out"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
-            app:layout_constraintVertical_bias="0.244" />
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

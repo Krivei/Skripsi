@@ -1,9 +1,17 @@
 package com.example.personalrecordv4.listener
 
-import android.widget.AdapterView.OnItemClickListener
-
 interface onItemClickListener {
     fun OnItemClick(position: Int){
 
     }
+
+    fun OnItemSelect(name: String, reps: Int, sets: Int, spltids: Array<String>){
+
+    }
+
+    fun OnItemDelete(nama: String, reps: Int, sets: Int, splitId: String){
+
+    }
+
+
 }
