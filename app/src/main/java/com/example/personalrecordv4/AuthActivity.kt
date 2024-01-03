@@ -33,7 +33,7 @@ class AuthActivity : AppCompatActivity() {
                 alert.dismiss()
             }
             if (result != null) {
-               alert.show()
+                alert.show()
             }
         }
 

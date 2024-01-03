@@ -35,6 +35,7 @@ import kotlin.math.abs
 
 class AddWeightLogActivity : AppCompatActivity() {
     private val weightLogViewModel : WeightLogViewModel by viewModels()
+    private lateinit var unwrappedBitmap: Bitmap
     private lateinit var preview: Preview
     private lateinit var imageCapture: ImageCapture
     private lateinit var cameraProvider: ProcessCameraProvider
@@ -65,6 +66,28 @@ class AddWeightLogActivity : AppCompatActivity() {
         }
         addweight.ivBackPhoto.setOnClickListener {
             finish()
+        }
+
+        addweight.ivDone.setOnClickListener {
+
+            val x = addweight.etWeightInput.text.toString()
+
+            if (!weightLogViewModel.isWeightEmpty(x)){
+                addweight.etWeightInput.error = "Please Input Your Weight"
+                return@setOnClickListener
+            }
+            var weight = x.toDouble()
+            // Upload the bitmap to Firebase Cloud Storage
+            if (!weightLogViewModel.isWeightValid(weight)){
+                Log.i("AddWeightLogActivity","Weight InValid")
+                addweight.etWeightInput.error = "Invalid Weight Input"
+                return@setOnClickListener
+            }
+            Log.i("AddWeightLogActivity","Weight Valid")
+            weightLogViewModel.addWeightLog(unwrappedBitmap, weight)
+            Toast.makeText(this@AddWeightLogActivity, "Weight Log Added", Toast.LENGTH_SHORT).show()
+            finish()
+
         }
 
         addweight.ivSwitch.setOnClickListener {
@@ -228,7 +251,7 @@ private fun takePhoto() {
                 val imageProxyBuffer = image.planes[0].buffer
                 val imageBytes = ByteArray(imageProxyBuffer.remaining())
                 imageProxyBuffer.get(imageBytes)
-                val unwrappedBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+                unwrappedBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
                 // Show the captured image on the ImageView
                 addweight.ivreview.setImageBitmap(unwrappedBitmap)
 
@@ -240,14 +263,7 @@ private fun takePhoto() {
 
                 // Close the image proxy
                 image.close()
-                addweight.ivDone.setOnClickListener {
-                    val x = addweight.etWeightInput.text.toString()
-                    var weight = x.toDouble()
-                    // Upload the bitmap to Firebase Cloud Storage
-                    weightLogViewModel.addWeightLog(unwrappedBitmap, weight)
-                    Toast.makeText(this@AddWeightLogActivity, "Weight Log Added", Toast.LENGTH_SHORT).show()
-                    finish()
-                }
+
             }
 
             override fun onError(exception: ImageCaptureException) {

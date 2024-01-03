@@ -42,6 +42,8 @@ class UserViewModel : ViewModel() {
     fun isNameValid(nama: String) : Boolean{
         return (nama.isNotBlank())
     }
+
+
     fun isEmailValid(email: String) : Boolean {
         return (Patterns.EMAIL_ADDRESS.matcher(email).matches() && email.isNotBlank())
     }
@@ -52,7 +54,14 @@ class UserViewModel : ViewModel() {
         repo.signOut()
     }
 
+    fun updateList(planId : String){
+        repo.updateList(planId)
+    }
+
     fun editData(name: String, password: String){
         repo.editData(name,password)
+    }
+    fun deleteWorkoutPlan(planId : String){
+        repo.deleteWorkoutPlan(planId)
     }
 }

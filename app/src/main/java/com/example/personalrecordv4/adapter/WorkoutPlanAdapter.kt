@@ -1,24 +1,24 @@
 package com.example.personalrecordv4.adapter
 
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.personalrecordv4.listener.onItemClickListener
 import com.example.personalrecordv4.R
-import com.example.personalrecordv4.SplitListFragment
 import com.example.personalrecordv4.model.WorkoutPlan
 
-class WorkoutPlanAdapter(private val workoutPlanList: MutableList<WorkoutPlan>) : RecyclerView.Adapter<WorkoutPlanAdapter.WorkoutPlanViewHolder>(){
+class WorkoutPlanAdapter(private val workoutPlanList: MutableList<WorkoutPlan>, val itemClick: onItemClickListener) : RecyclerView.Adapter<WorkoutPlanAdapter.WorkoutPlanViewHolder>(){
     inner class WorkoutPlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val WorkoutPlanTitle: TextView = itemView.findViewById(
             R.id.tvPlanName)
         val WorkoutPlanType: TextView = itemView.findViewById(
             R.id.tvPlanType
         )
+        val clDelete = itemView.findViewById<ConstraintLayout>(R.id.clDelete)
 
     }
 
@@ -45,16 +45,11 @@ class WorkoutPlanAdapter(private val workoutPlanList: MutableList<WorkoutPlan>) 
                 currentItem.splitId.forEach {
                     spltids += it
                 }
-                val args =  Bundle()
-                args.putStringArray("splitID", spltids)
-                val fragment = SplitListFragment()
-                fragment.arguments = args
-                val fragmentManager = (holder.itemView.context as AppCompatActivity).supportFragmentManager
-                val fragmentTransaction = fragmentManager.beginTransaction()
-                fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
-                fragmentTransaction.addToBackStack(null)
-                fragmentTransaction.commit()
+                itemClick.OnItemSelect(currentItem.name,currentItem.reps,currentItem.sets,spltids)
             }
+        }
+        holder.clDelete.setOnClickListener {
+            itemClick.OnItemDelete(currentItem.name,position,position,"")
         }
     }
 }

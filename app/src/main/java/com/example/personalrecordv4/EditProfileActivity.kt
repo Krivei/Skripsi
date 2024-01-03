@@ -20,7 +20,18 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.etEditName.setText(intent.getStringExtra(EXTRA_NAMA))
         binding.btnSaveProfile.setOnClickListener{
+            val x = binding.etEditName.text.toString()
+            if (!userViewModel.isNameValid(x)){
+                binding.etEditName.error = "Name cannot be empty!"
+                return@setOnClickListener
+            }
+            val pass = binding.etEditPassword.text.toString()
+            if (!userViewModel.isPasswordValid(pass)){
+                binding.etEditPassword.error = "Password must have more than 5 characters"
+                return@setOnClickListener
+            }
             userViewModel.editData(binding.etEditName.text.toString().trim(), binding.etEditPassword.text.toString().trim())
+            finish()
         }
         binding.ivBack.setOnClickListener{
             finish()
