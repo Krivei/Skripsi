@@ -55,6 +55,14 @@ class TutorialDetailFragment : Fragment(R.layout.fragment_tutorial_detail) {
                 binding.btnTryTutorial.text = "Try ${tutorialViewModel.tutorial.value!!.name}"
             }
         })
+
+        binding.btnBack.setOnClickListener {
+            val fragmentTransaction = requireFragmentManager().beginTransaction()
+            val fragment = TutorialsFragment()
+            fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
     }
 
 }
