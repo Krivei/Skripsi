@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TutorialDetailFragment">
+    tools:context=".TutorialDetailFragment"
+    android:background="@color/white"
+    >
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout17"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="#3C699F"
+        android:padding="10dp"
+        android:background="#27005D"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -26,6 +29,15 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/backbutton"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -44,6 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="560dp"
         android:padding="15dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,6 +84,8 @@
                 android:textStyle="bold"
                 android:id="@+id/textView22"
                 android:layout_width="wrap_content"
+                android:textColor="@color/white"
+
                 android:layout_height="wrap_content"
                 android:text="Muscles Targeted :"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,6 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toEndOf="@+id/textView22"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -89,6 +105,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Instructions :"
+                android:textColor="@color/white"
+
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView22" />
@@ -99,6 +117,8 @@
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textSize="14sp"
+                android:textColor="@color/white"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView24"
                 app:layout_constraintTop_toBottomOf="@+id/textView24" />
@@ -106,7 +126,9 @@
             <Button
                 android:id="@+id/btnTryTutorial"
                 android:layout_width="wrap_content"
+                android:backgroundTint="#A96AFF"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:text="Button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

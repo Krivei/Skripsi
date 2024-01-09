@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WeightLogDetailFragment">
+    tools:context=".WeightLogDetailFragment"
+    android:background="@color/white">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -45,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -58,7 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextVisdaew"
-            android:textColor="@color/black"
+
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/ivDetailPicture"
@@ -73,7 +75,8 @@
             android:src="@drawable/baseline_delete_24"
             app:layout_constraintBottom_toTopOf="@+id/ivDetailPicture"
             app:layout_constraintEnd_toEndOf="@+id/ivDetailPicture"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
 
         <ImageView
             android:id="@+id/btnBack"
@@ -83,6 +86,6 @@
             app:layout_constraintBottom_toTopOf="@+id/ivDetailPicture"
             app:layout_constraintStart_toStartOf="@+id/ivDetailPicture"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/black" />
+            app:tint="@color/white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

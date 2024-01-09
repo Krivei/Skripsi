@@ -77,6 +77,13 @@ class WeightLogDetailFragment : Fragment(R.layout.fragment_weight_log_detail) {
                     })
                     builder.show()
                 }
+                binding.btnBack.setOnClickListener {
+                    val fragmentTransaction = requireFragmentManager().beginTransaction()
+                    val fragment = WeightLogFragment()
+                    fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
+                    fragmentTransaction.addToBackStack(null)
+                    fragmentTransaction.commit()
+                }
             }
         })
     }

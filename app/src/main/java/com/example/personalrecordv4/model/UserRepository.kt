@@ -2,16 +2,15 @@ package com.example.personalrecordv4.model
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.personalrecordv4.viewmodel.NotificationViewModel
 import com.example.personalrecordv4.viewmodel.WorkoutPlanViewModel
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
-import com.google.firebase.firestore.toObjects
-
+import com.pushwoosh.Pushwoosh
 import com.google.firebase.ktx.Firebase
+import java.sql.Time
 
 class UserRepository(){
     var _user: MutableLiveData<FirebaseUser> = MutableLiveData()
@@ -34,10 +33,10 @@ class UserRepository(){
             if (task.isSuccessful){
                 val userId = auth.currentUser!!.uid
                 val workout = mutableListOf<String>()
-                val user = User(email,nama, workout)
+                val user = User(email,nama, workout,"08:00")
                 db.document(userId).set(user)
                 _isRegistered.postValue(true)
-                NotificationViewModel().updateToken()
+                Pushwoosh.getInstance().registerForPushNotifications()
             } else {
                 _isRegistered.postValue(false)
                 Log.i("Test", "Register: Gagal")
@@ -51,13 +50,9 @@ class UserRepository(){
                     Log.i("SignIn","Login Berhasil")
                     _user.postValue(auth.currentUser)
                     _loginResult.postValue(true)
-                    NotificationViewModel().updateToken()
                     db.document(auth.currentUser!!.uid).get().addOnSuccessListener {document ->
                         _userData.postValue(document.toObject<User>())
                         Log.i("SignIn","${_userData.value}")
-                        val titleList = document.toObject<User>()!!.workoutPlanId
-                        Log.i("SignIn","${titleList}")
-                        WorkoutPlanViewModel().getWorkoutPlan(titleList)
                     }
                 }  else {
                     _loginResult.postValue(false)
@@ -100,6 +95,14 @@ class UserRepository(){
     fun editData(name: String, password: String){
         db.document(auth.currentUser!!.uid).update("name", name)
         auth.currentUser!!.updatePassword(password)
+    }
+
+    fun editReminder(reminder : String){
+        db.document(auth.currentUser!!.uid).update("reminder",reminder)
+    }
+
+    fun getTime() : String {
+        return _userData.value!!.reminder
     }
 
 }

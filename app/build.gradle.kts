@@ -80,5 +80,6 @@ dependencies {
     implementation("androidx.camera:camera-view:$cameraxVersion")
     implementation("androidx.camera:camera-extensions:$cameraxVersion")
     implementation("androidx.work:work-runtime:2.9.0")
-
+//    implementation("com.onesignal:OneSignal:[5.0.0, 5.99.99]")
+    implementation ("com.pushwoosh:pushwoosh-firebase:6.7.2")
 }

@@ -1,18 +1,17 @@
 package com.example.personalrecordv4
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import com.example.personalrecordv4.adapter.SplitAdapter
-import com.example.personalrecordv4.adapter.WorkoutPlanAdapter
 import com.example.personalrecordv4.databinding.ActivityMainBinding
 import com.example.personalrecordv4.viewmodel.UserViewModel
-import com.google.firebase.auth.FirebaseUser
+import com.pushwoosh.Pushwoosh
+import com.pushwoosh.tags.Tags
+import com.pushwoosh.tags.TagsBundle
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,20 +23,32 @@ class MainActivity : AppCompatActivity() {
     private val tutorialsFragment = TutorialsFragment()
     private val historyFragment = HistoryFragment()
     private val weightLogFragment = WeightLogFragment()
+    private val tutorialPickFragment = TutorialPickFragment()
+    val ONESIGNAL_APP_ID = "b7b52934-02b7-4c95-9fe7-7d3cfd1c04ac"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        userViewModel.user.observe(this, Observer<FirebaseUser>{ user ->
-            if(user == null){
+        userViewModel.user.observe(this) { user ->
+            if (user == null) {
                 startActivity(Intent(this@MainActivity, AuthActivity::class.java))
+                Pushwoosh.getInstance().unregisterForPushNotifications()
                 finish()
+            } else {
+                Pushwoosh.getInstance().registerForPushNotifications()
             }
-        })
+        }
+        userViewModel.userData.observe(this){
+            if (it!=null){
+                Log.i("SHESH","SHESH")
+                Pushwoosh.getInstance().sendTags(Tags.stringTag("Reminder",userViewModel.userData.value!!.reminder))
+            }
+        }
         binding.bottomnav.setOnItemSelectedListener {
             setMode(it.itemId)
             true
         }
+
 
     }
 
@@ -60,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.TutorialNav -> {
                 Log.i("Navigate", "Tutorial")
-                navigateToFragment(tutorialsFragment)
+                navigateToFragment(tutorialPickFragment)
                 title="Tutorials"
             }
             R.id.WeightNav -> {
@@ -68,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                 navigateToFragment(weightLogFragment)
                 title="Weight Logs"
             }
+
         }
         setActionBarTitle(title)
     }

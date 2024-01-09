@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.personalrecordv4.adapter.TutorialAdapter
+import com.example.personalrecordv4.databinding.FragmentTutorialsBinding
 import com.example.personalrecordv4.viewmodel.TutorialViewModel
 import com.example.personalrecordv4.viewmodel.UserViewModel
 
@@ -19,6 +20,7 @@ class TutorialsFragment : Fragment(R.layout.fragment_tutorials) {
     private val userViewModel : UserViewModel by activityViewModels()
     private var recyclerView : RecyclerView? =null
     private val tutorialViewModel : TutorialViewModel by activityViewModels()
+    private lateinit var binding : FragmentTutorialsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userViewModel.userData.observe(this) {
@@ -44,6 +46,7 @@ class TutorialsFragment : Fragment(R.layout.fragment_tutorials) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var progressBar = view?.findViewById<ProgressBar>(R.id.weight_progressbar)
+        binding = FragmentTutorialsBinding.bind(view)
         tutorialViewModel.isLoading.observe(viewLifecycleOwner){
             if (it == null) {
                 Log.i("Test", "Loading: Gagal")
@@ -67,6 +70,14 @@ class TutorialsFragment : Fragment(R.layout.fragment_tutorials) {
                     recyclerView?.adapter = TutorialAdapter(it)
                 }
             }
+        }
+
+        binding.btnBack.setOnClickListener {
+            val fragmentTransaction = requireFragmentManager().beginTransaction()
+            val fragment = TutorialPickFragment()
+            fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
         }
 
 

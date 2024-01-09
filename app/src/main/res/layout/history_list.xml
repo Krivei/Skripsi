@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@drawable/rounded"
+        android:background="@drawable/rounded3"
         android:padding="15dp"
         >
 
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Workout Name"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textStyle="bold"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:text="TextView"
             app:layout_constraintStart_toStartOf="@+id/tvNameHistory"
             app:layout_constraintTop_toBottomOf="@+id/tvNameHistory" />
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:text="TextView"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

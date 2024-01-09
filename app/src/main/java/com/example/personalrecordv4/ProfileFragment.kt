@@ -1,5 +1,6 @@
 package com.example.personalrecordv4
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,13 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.personalrecordv4.adapter.NotificationAdapter
 import com.example.personalrecordv4.databinding.FragmentProfileBinding
-import com.example.personalrecordv4.model.Notifications
 import com.example.personalrecordv4.model.User
-import com.example.personalrecordv4.viewmodel.NotificationViewModel
 import com.example.personalrecordv4.viewmodel.UserViewModel
 
 
@@ -23,7 +20,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val userViewModel : UserViewModel by activityViewModels()
     private lateinit var binding: FragmentProfileBinding
     private var recyclerView : RecyclerView? =null
-    private val notificationViewModel : NotificationViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +27,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             if (it == null) {
                 Log.i("Test", "User: Gagal")
             } else {
-                notificationViewModel.getNotif()
+//                notificationViewModel.getNotif()
             }
         }
     }
@@ -56,33 +52,42 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 binding.tvusername.text = userViewModel.userData.value!!.name
                 binding.tvusername2.text = userViewModel.userData.value!!.name
                 binding.tvemail.text = userViewModel.userData.value!!.email
+                binding.tvNotifTime.text = userViewModel.userData.value!!.reminder
             }
         })
 
-        notificationViewModel.notifications.observe(viewLifecycleOwner,Observer<Notifications>{
-            if (it==null){
 
-            } else {
-                binding.tvNotifTime.text = notificationViewModel.notifications.value!!.time
-            }
-        })
 
-        notificationViewModel.days.observe(viewLifecycleOwner){
-            if (it==null){
-                Log.i("ProfileFragment", "Days Failed to Load")
-            } else {
-                recyclerView.apply {
-                    recyclerView = view?.findViewById(R.id.rvNotifs)
-                    recyclerView?.layoutManager = LinearLayoutManager(activity,
-                        RecyclerView.HORIZONTAL,false)
-                    recyclerView?.setHasFixedSize(true)
-                    recyclerView?.adapter = NotificationAdapter(it)
-                }
+        var reminderConfirmation = AlertDialog.Builder(requireActivity())
+        reminderConfirmation.setTitle("Confirm Reminder Change")
+        reminderConfirmation.setNegativeButton("No"){
+            dialog, which ->
+            dialog.dismiss()
+        }
+        binding.btn8.setOnClickListener {
+            reminderConfirmation.setMessage("Change reminder to 09:00 ?")
+            reminderConfirmation.setPositiveButton("Yes"){
+                    dialog,which ->
+//                notificationViewModel.setNotif("08:00")
+                userViewModel.editReminder("09:00")
+                dialog.dismiss()
+
             }
+            reminderConfirmation.show()
         }
 
+        binding.btn16.setOnClickListener {
+            reminderConfirmation.setMessage("Change reminder to 15:00 ?")
+            reminderConfirmation.setPositiveButton("Yes"){
+                dialog,which ->
+//                notificationViewModel.setNotif("16:00")
+                userViewModel.editReminder("15:00")
+                dialog.dismiss()
 
+            }
+            reminderConfirmation.show()
 
+        }
 
         binding.btnSignout.setOnClickListener {
             userViewModel.signOut()

@@ -64,4 +64,7 @@ class UserViewModel : ViewModel() {
     fun deleteWorkoutPlan(planId : String){
         repo.deleteWorkoutPlan(planId)
     }
+    fun editReminder(reminder : String){
+        repo.editReminder(reminder)
+    }
 }
