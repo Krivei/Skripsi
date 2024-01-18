@@ -10,7 +10,7 @@ import com.example.personalrecordv4.R
 import com.example.personalrecordv4.listener.onItemClickListener
 import com.example.personalrecordv4.model.Exercise
 
-class EditExerciseAdapter(private val exerciselist : MutableList<Exercise>, val itemClick: onItemClickListener): RecyclerView.Adapter<EditExerciseAdapter.EditExerciseViewHolder>() {
+class EditExerciseAdapter(private val exerciselist : MutableList<Exercise>, val itemClick: onItemClickListener, val status: String): RecyclerView.Adapter<EditExerciseAdapter.EditExerciseViewHolder>() {
     inner class EditExerciseViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ExerciseTitle: TextView = itemView.findViewById(R.id.tvPlanName)
         val ExerciseType : TextView = itemView.findViewById(R.id.tvPlanType)
@@ -31,7 +31,11 @@ class EditExerciseAdapter(private val exerciselist : MutableList<Exercise>, val 
         val currentItem = exerciselist[position]
         holder.ExerciseTitle.text = currentItem.name
         holder.ExerciseType.text = currentItem.muscleType.toString()
-        holder.clDo.visibility = View.GONE
+        if (status=="Exercise"){
+            holder.clDelete.visibility = View.GONE
+        } else {
+            holder.clDo.visibility = View.GONE
+        }
 
         holder.clDelete.setOnClickListener {
             itemClick.OnItemDelete(currentItem.name,currentItem.defaultReps,currentItem.defaultSets,"")

@@ -13,5 +13,9 @@ interface onItemClickListener {
 
     }
 
+    fun OnWorkoutStart(nama: String, reps: Int, sets: Int, splitIds: Array<String>){
+
+    }
+
 
 }

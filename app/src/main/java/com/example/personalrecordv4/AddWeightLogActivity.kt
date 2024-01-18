@@ -2,19 +2,15 @@ package com.example.personalrecordv4
 
 import android.content.DialogInterface
 import android.content.pm.PackageManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.annotation.NonNull
 import androidx.camera.core.AspectRatio
@@ -29,8 +25,6 @@ import androidx.camera.core.resolutionselector.ResolutionSelector
 import androidx.camera.lifecycle.ProcessCameraProvider
 import com.example.personalrecordv4.databinding.ActivityAddWeightLogBinding
 import com.example.personalrecordv4.viewmodel.WeightLogViewModel
-import com.google.firebase.storage.FirebaseStorage
-import java.util.UUID
 import kotlin.math.abs
 
 class AddWeightLogActivity : AppCompatActivity() {
@@ -46,16 +40,11 @@ class AddWeightLogActivity : AppCompatActivity() {
         ActivityAddWeightLogBinding.inflate(layoutInflater)
     }
     private val multiplePermissionId = 14
-    private val multiplePermissionNameList = if (Build.VERSION.SDK_INT >= 26){
+    private val multiplePermissionNameList =
         arrayListOf(
             android.Manifest.permission.CAMERA
         )
-    } else {
-        arrayListOf(
-            android.Manifest.permission.CAMERA,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -265,20 +254,11 @@ private fun takePhoto() {
                 image.close()
 
             }
-
             override fun onError(exception: ImageCaptureException) {
                 Toast.makeText(this@AddWeightLogActivity, "ERROR: " + exception.message.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     )
-
 }
-//    private fun imageToBitmap(image: ImageProxy): Bitmap {
-//        val buffer = image.planes[0].buffer
-//        val bytes = ByteArray(buffer.remaining())
-//        buffer.get(bytes)
-//        return BitmapFactory.decodeByteArray(bytes, 0,bytes.size)
-//    }
-
 
 }

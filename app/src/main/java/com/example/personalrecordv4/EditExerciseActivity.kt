@@ -23,6 +23,7 @@ class EditExerciseActivity : AppCompatActivity() ,onItemClickListener {
     private var repetition: Int = 0
     private var set: Int = 0
     private var splitIds : String = ""
+    private var status = ""
     private val splitViewModel : SplitViewModel by viewModels()
     private val exerciseViewModel : ExerciseViewModel by viewModels()
     override fun OnItemDelete(nama: String, reps: Int, sets: Int, splitId: String){
@@ -45,6 +46,10 @@ class EditExerciseActivity : AppCompatActivity() ,onItemClickListener {
         repetition = intent.getIntExtra("repetition",10)
         set = intent.getIntExtra("set",3)
         splitIds = intent.getStringExtra("splitId").toString()
+        status = intent.getStringExtra("Status").toString()
+        if (status=="Exercise"){
+            binding.btnAddExerciseWork.visibility = View.GONE
+        }
         binding.ivEEBack.setOnClickListener { finish() }
         binding.ivEEDone.setOnClickListener { finish() }
         splitViewModel.getSingleSplit(splitIds)
@@ -68,7 +73,7 @@ class EditExerciseActivity : AppCompatActivity() ,onItemClickListener {
                     recyclerView?.visibility = View.VISIBLE
                     recyclerView?.setHasFixedSize(true)
                     recyclerView?.layoutManager = LinearLayoutManager(this)
-                    recyclerView?.adapter = EditExerciseAdapter(exerciseViewModel.listExercise.value!!,this)
+                    recyclerView?.adapter = EditExerciseAdapter(exerciseViewModel.listExercise.value!!,this, status)
                 }
             }
         }

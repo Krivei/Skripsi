@@ -64,6 +64,8 @@ class UserRepository(){
     fun signOut(){
         auth.signOut()
         Log.i("SignOut", "Sign Out Sukses")
+        Pushwoosh.getInstance().unregisterForPushNotifications()
+        Log.i("Pushwoosh","Unregistered")
     }
 
     fun updateList(planId : String){

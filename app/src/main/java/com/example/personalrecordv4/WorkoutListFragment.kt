@@ -40,6 +40,17 @@ class WorkoutListFragment : Fragment(R.layout.fragment_workout_list) , onItemCli
 
     }
 
+    override fun OnWorkoutStart(nama: String, reps: Int, sets: Int, splitIds: Array<String>) {
+        super.OnWorkoutStart(nama, reps, sets, splitIds)
+        val intent = Intent(activity,EditSplitActivity::class.java)
+        intent.putExtra("splitId",splitIds)
+        intent.putExtra("repetition",reps)
+        intent.putExtra("set",sets)
+        intent.putExtra("workoutName",nama)
+        intent.putExtra("Status","Exercise")
+        startActivity(intent)
+    }
+
     override fun OnItemDelete(nama: String, reps: Int, sets: Int, splitId: String) {
         super.OnItemDelete(nama, reps, sets, splitId)
         val konfirmasi = AlertDialog.Builder(requireActivity())

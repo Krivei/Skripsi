@@ -21,6 +21,7 @@ class EditSplitActivity : AppCompatActivity() , onItemClickListener {
     private val exerciseViewModel : ExerciseViewModel by viewModels()
     private lateinit var binding : ActivityEditSplitBinding
     private var workoutname = ""
+    private var status = ""
     private var repetition: Int = 0
     private var set: Int = 0
     private var splitIdArray = mutableListOf<String>()
@@ -32,6 +33,7 @@ class EditSplitActivity : AppCompatActivity() , onItemClickListener {
         intent.putExtra("repetition",repetition)
         intent.putExtra("set",set)
         intent.putExtra("splitId",name)
+        intent.putExtra("Status",status)
         startActivity(intent)
 
     }
@@ -44,6 +46,7 @@ class EditSplitActivity : AppCompatActivity() , onItemClickListener {
         repetition = intent.getIntExtra("repetition",10)
         set = intent.getIntExtra("set",3)
         splitIdArray = intent.getStringArrayExtra("splitId")!!.toMutableList()
+        status = intent.getStringExtra("Status").toString()
         binding.textView18.text = workoutname
         binding.tvSet.text = set.toString()
         binding.tvRep.text = repetition.toString()

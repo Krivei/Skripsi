@@ -19,7 +19,7 @@ class WorkoutPlanAdapter(private val workoutPlanList: MutableList<WorkoutPlan>, 
             R.id.tvPlanType
         )
         val clDelete = itemView.findViewById<ConstraintLayout>(R.id.clDelete)
-
+        val clDo = itemView.findViewById<ConstraintLayout>(R.id.clDo)
     }
 
 
@@ -50,6 +50,15 @@ class WorkoutPlanAdapter(private val workoutPlanList: MutableList<WorkoutPlan>, 
         }
         holder.clDelete.setOnClickListener {
             itemClick.OnItemDelete(currentItem.name,position,position,"")
+        }
+
+
+        holder.clDo.setOnClickListener {
+            var splitids : Array<String> = arrayOf()
+            currentItem.splitId.forEach {
+                splitids+=it
+            }
+            itemClick.OnWorkoutStart(currentItem.name,currentItem.reps,currentItem.sets,splitids)
         }
     }
 }

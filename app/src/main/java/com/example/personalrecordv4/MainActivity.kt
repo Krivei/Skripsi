@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
             if (user == null) {
                 startActivity(Intent(this@MainActivity, AuthActivity::class.java))
                 Pushwoosh.getInstance().unregisterForPushNotifications()
+                Log.i("Pushwoosh","Unregistered")
                 finish()
             } else {
                 Pushwoosh.getInstance().registerForPushNotifications()

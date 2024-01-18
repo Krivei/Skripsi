@@ -68,7 +68,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             reminderConfirmation.setMessage("Change reminder to 09:00 ?")
             reminderConfirmation.setPositiveButton("Yes"){
                     dialog,which ->
-//                notificationViewModel.setNotif("08:00")
+
                 userViewModel.editReminder("09:00")
                 dialog.dismiss()
 
