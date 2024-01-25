@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private var title : String = "Workout Plans"
     private val workoutListFragment = WorkoutListFragment()
     private val profileFragment = ProfileFragment()
-    private val tutorialsFragment = TutorialsFragment()
     private val historyFragment = HistoryFragment()
     private val weightLogFragment = WeightLogFragment()
     private val tutorialPickFragment = TutorialPickFragment()

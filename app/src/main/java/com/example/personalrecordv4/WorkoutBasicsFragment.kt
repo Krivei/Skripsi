@@ -1,33 +1,29 @@
 package com.example.personalrecordv4
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.personalrecordv4.adapter.TutorialAdapter
-import com.example.personalrecordv4.databinding.FragmentTutorialsBinding
-import com.example.personalrecordv4.viewmodel.TutorialViewModel
+import com.example.personalrecordv4.adapter.WorkoutBasicsAdapter
+import com.example.personalrecordv4.databinding.FragmentWorkoutBasicsBinding
 import com.example.personalrecordv4.viewmodel.UserViewModel
+import com.example.personalrecordv4.viewmodel.WorkoutBasicsViewModel
 
 
-class TutorialsFragment : Fragment(R.layout.fragment_tutorials) {
+class WorkoutBasicsFragment : Fragment(R.layout.fragment_workout_basics) {
     private val userViewModel : UserViewModel by activityViewModels()
+    private val workoutBasicsViewModel : WorkoutBasicsViewModel by activityViewModels()
+    private lateinit var binding : FragmentWorkoutBasicsBinding
     private var recyclerView : RecyclerView? =null
-    private val tutorialViewModel : TutorialViewModel by activityViewModels()
-    private lateinit var binding : FragmentTutorialsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userViewModel.userData.observe(this) {
-            if (it == null) {
-                Log.i("Test", "User: Gagal")
-            } else {
-                tutorialViewModel.getTutorial()
+        userViewModel.userData.observe(this){
+            if (it!=null){
+                workoutBasicsViewModel.getBasics()
             }
         }
     }
@@ -37,39 +33,22 @@ class TutorialsFragment : Fragment(R.layout.fragment_tutorials) {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tutorials, container, false)
-
+        return inflater.inflate(R.layout.fragment_workout_basics, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var progressBar = view?.findViewById<ProgressBar>(R.id.weight_progressbar)
-        binding = FragmentTutorialsBinding.bind(view)
-        tutorialViewModel.isLoading.observe(viewLifecycleOwner){
-            if (it == null) {
-                Log.i("Test", "Loading: Gagal")
-            } else {
-                if (it) {
-                    progressBar?.visibility = View.VISIBLE
-                } else {
-                    progressBar?.visibility = View.GONE
-                }
-            }
-        }
-
-        tutorialViewModel.listTutorial.observe(viewLifecycleOwner){
-            if (it == null){
-                Log.i("Test", "Tutorial : Gagal")
-            } else {
+        binding = FragmentWorkoutBasicsBinding.bind(view)
+        workoutBasicsViewModel.listBasics.observe(viewLifecycleOwner){
+            if (it!=null){
                 recyclerView.apply {
-                    recyclerView = view?.findViewById(R.id.rvTutorial)
+                    recyclerView = view?.findViewById(R.id.rvWorkoutBasics)
                     recyclerView?.layoutManager = LinearLayoutManager(activity)
                     recyclerView?.setHasFixedSize(true)
-                    recyclerView?.adapter = TutorialAdapter(it)
+                    recyclerView?.adapter = WorkoutBasicsAdapter(it)
                 }
             }
         }
-
         binding.btnBack.setOnClickListener {
             val fragmentTransaction = requireFragmentManager().beginTransaction()
             val fragment = TutorialPickFragment()
@@ -77,11 +56,6 @@ class TutorialsFragment : Fragment(R.layout.fragment_tutorials) {
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
-
-
-
     }
-
-
 
 }

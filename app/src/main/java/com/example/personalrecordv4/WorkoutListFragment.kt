@@ -37,17 +37,17 @@ class WorkoutListFragment : Fragment(R.layout.fragment_workout_list) , onItemCli
         intent.putExtra("set",sets)
         intent.putExtra("workoutName",name)
         startActivity(intent)
-
     }
 
-    override fun OnWorkoutStart(nama: String, reps: Int, sets: Int, splitIds: Array<String>) {
-        super.OnWorkoutStart(nama, reps, sets, splitIds)
+    override fun OnWorkoutStart(nama: String, reps: Int, sets: Int, splitIds: Array<String>, type: String) {
+        super.OnWorkoutStart(nama, reps, sets, splitIds,type)
         val intent = Intent(activity,EditSplitActivity::class.java)
         intent.putExtra("splitId",splitIds)
         intent.putExtra("repetition",reps)
         intent.putExtra("set",sets)
         intent.putExtra("workoutName",nama)
         intent.putExtra("Status","Exercise")
+        intent.putExtra("workoutType",type)
         startActivity(intent)
     }
 

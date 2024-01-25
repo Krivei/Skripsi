@@ -5,9 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import com.example.personalrecordv4.databinding.FragmentTutorialPickBinding
-import com.example.personalrecordv4.databinding.FragmentTutorialsBinding
 
 
 class TutorialPickFragment : Fragment(R.layout.fragment_tutorial_pick) {
@@ -37,6 +35,14 @@ class TutorialPickFragment : Fragment(R.layout.fragment_tutorial_pick) {
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
 
+        }
+
+        binding.clWorkoutBasic.setOnClickListener {
+            val fragmentTransaction = requireFragmentManager().beginTransaction()
+            val fragment = WorkoutBasicsFragment()
+            fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
         }
     }
 

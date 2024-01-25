@@ -2,17 +2,23 @@ package com.example.personalrecordv4
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.text.InputType
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.camera.core.CameraSelector
@@ -21,9 +27,11 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import com.example.personalrecordv4.viewmodel.HistoryViewModel
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.pose.Pose
@@ -38,7 +46,6 @@ class ExerciseActivity : AppCompatActivity() {
     private var PERMISSION_REQUESTS = 1
     private var previewView: PreviewView? = null
 
-    // Base pose detector with streaming frames, when depending on the pose-detection sdk
     private var options = PoseDetectorOptions.Builder()
         .setDetectorMode(PoseDetectorOptions.STREAM_MODE)
         .build()
@@ -58,14 +65,23 @@ class ExerciseActivity : AppCompatActivity() {
     private var exerciseState = "stretch"
     private var currentSet = 1
     private var status = ""
+    private var finisher = ""
+    private var historyId = ""
+    private var weight = 0
+    private var keeper = false
     private var timer: CountDownTimer? = null
+    private var weightList = mutableListOf<Int>()
+    private var repList = mutableListOf<Int>()
     private lateinit var counter : AppCompatTextView
     private lateinit var timertext : AppCompatTextView
     private lateinit var title : AppCompatTextView
     private lateinit var notice : AppCompatTextView
     private lateinit var tip : AppCompatTextView
     private lateinit var bodyparts : AppCompatTextView
+    private lateinit var setDisplay : AppCompatTextView
+    private lateinit var mediaPlayer: MediaPlayer
 
+    private val historyViewModel : HistoryViewModel by viewModels()
     @ExperimentalGetImage
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,32 +90,54 @@ class ExerciseActivity : AppCompatActivity() {
         name = intent.getStringExtra("Name").toString()
         rep = intent.getIntExtra("Rep",5)
         status = intent.getStringExtra("Status").toString()
+        historyId = intent.getStringExtra("historyId").toString()
+        Log.i("ExerciseNih","History ID : $historyId")
+        weight = intent.getIntExtra("weight",0)
         cameraProviderFuture = ProcessCameraProvider.getInstance(this)
         var cancel = findViewById<ImageView>(R.id.cancelExercise)
         var giveup = findViewById<ImageView>(R.id.ivGiveUp)
+        var setLayout = findViewById<ConstraintLayout>(R.id.clSet)
+        setDisplay = findViewById(R.id.tvCurrentExercise)
         if (status=="Tutorial"){
             giveup.visibility = View.GONE
+            setLayout.visibility = View.GONE
+        } else {
+            cancel.visibility = View.GONE
         }
         cancel.setOnClickListener {
             finish()
+        }
+        giveup.setOnClickListener {
+            if (exerciseCounter>=rep){
+                nextSetDialog()
+            } else {
+                unbindCamera()
+                giveUpDialog()
+            }
         }
         previewView = findViewById(R.id.previewView)
         display = findViewById(R.id.displayOverlay)
         counter = findViewById(R.id.tvRepetition)
         timertext = findViewById(R.id.tvTimer)
         title = findViewById(R.id.tvActivityTitle)
+        title.text = name
         notice = findViewById(R.id.notice)
         tip = findViewById(R.id.tip)
         bodyparts = findViewById(R.id.tvBodyParts)
         mPaint.color = Color.GREEN
         mPaint.style = Paint.Style.FILL_AND_STROKE
         mPaint.strokeWidth = 10f
-        timer = object : CountDownTimer(10000,1000){
+        timer = object : CountDownTimer(5000,1000){
             override fun onTick(millisUntilFinished: Long) {
+                unbindCamera()
+                giveup.visibility = View.GONE
+                finisher=""
                 notice.visibility = View.VISIBLE
                 timertext.text = (millisUntilFinished/1000).toString()
                 tip.visibility = View.VISIBLE
-                if (name.contains("Press")||name.contains("Pull Up")||name.contains("Row")||name.contains("Push Up")){
+                bodyparts.visibility = View.VISIBLE
+                timertext.visibility = View.VISIBLE
+                if (name.contains("Press")||name.contains("Pull Up")||name.contains("Push Up")){
                     bodyparts.text = "Elbows and Shoulders"
                 } else if (name.contains("Bicep")||name.contains("Skull")) {
                     bodyparts.text = "Elbows and Wrists"
@@ -107,9 +145,16 @@ class ExerciseActivity : AppCompatActivity() {
                     bodyparts.text = "Knees and Wrists"
                 } else if(name.contains("Squat")) {
                     bodyparts.text = "Knees and Hips"
+                } else if(name.contains("Row")){
+                    bodyparts.text = "Elbows and Hips"
                 }
             }
             override fun onFinish() {
+                if (status=="Exercise"){
+                    keeper = !keeper
+                    giveup.visibility = View.VISIBLE
+                    setDisplay.text = "$currentSet/$sets"
+                }
                 notice.visibility = View.GONE
                 tip.visibility = View.GONE
                 bodyparts.visibility = View.GONE
@@ -119,8 +164,6 @@ class ExerciseActivity : AppCompatActivity() {
                         val cameraProvider = cameraProviderFuture!!.get()
                         bindPreview(cameraProvider)
                     } catch (e: ExecutionException) {
-                        // No errors need to be handled for this Future.
-                        // This should never be reached.
                     } catch (e: InterruptedException) {
                     }
                 }, ContextCompat.getMainExecutor(this@ExerciseActivity))
@@ -128,12 +171,14 @@ class ExerciseActivity : AppCompatActivity() {
                     runtimePermissions
                 }
             }
-        }.start()
-
+        }
+        timer!!.start()
     }
     override fun onDestroy() {
         super.onDestroy()
-        timer?.cancel() // Ensure timer is cancelled when the activity is destroyed
+        unbindCamera()
+        timer?.cancel()
+        mediaPlayer.release()
     }
 
     var RunMlkit = Runnable {
@@ -144,7 +189,11 @@ class ExerciseActivity : AppCompatActivity() {
                 )
                 if (isExerciseCycleDetected(pose,name)) {
                     exerciseCounter++
-                    counter.text = exerciseCounter.toString()
+                    if (status=="Tutorial"){
+                        counter.text = "${exerciseCounter}"
+                    } else {
+                        counter.text = "${exerciseCounter} / ${rep}"
+                    }
                 }
                 updateExerciseState(pose,name)
             }.addOnFailureListener { }
@@ -169,8 +218,6 @@ class ExerciseActivity : AppCompatActivity() {
 
         ) { imageProxy ->
             val rotationDegrees = imageProxy.imageInfo.rotationDegrees
-            // insert your code here.
-            // after done, release the ImageProxy object
             val byteBuffer = imageProxy.image!!.planes[0].buffer
             byteBuffer.rewind()
             val bitmap = Bitmap.createBitmap(
@@ -242,7 +289,7 @@ class ExerciseActivity : AppCompatActivity() {
                         }
                     } else if(name.contains("Row")){
                         when(poseLandmark.landmarkType){
-                            PoseLandmark.LEFT_WRIST,PoseLandmark.RIGHT_WRIST,PoseLandmark.LEFT_HIP,PoseLandmark.RIGHT_HIP -> {
+                            PoseLandmark.LEFT_ELBOW,PoseLandmark.RIGHT_ELBOW,PoseLandmark.LEFT_HIP,PoseLandmark.RIGHT_HIP -> {
                                 canvas!!.drawCircle(
                                     poseLandmark.position.x,
                                     poseLandmark.position.y,
@@ -291,17 +338,26 @@ class ExerciseActivity : AppCompatActivity() {
         val kneeLeft = pose.getPoseLandmark(PoseLandmark.LEFT_KNEE)
         val kneeRight = pose.getPoseLandmark(PoseLandmark.RIGHT_KNEE)
         if (status=="Exercise"){
-            if (exerciseCounter>=rep){
-                Log.i("Stop","Exercise Stopped")
-                cameraProviderFuture?.addListener({
-                    try {
-                        val cameraProvider = cameraProviderFuture!!.get()
-                        // Unbind the camera
-                        cameraProvider.unbindAll()
-                    } catch (e: ExecutionException) {
-                    } catch (e: InterruptedException) {
+            if (exerciseCounter==rep){
+                keeper = !keeper
+                if (keeper==true){
+                    if (!this::mediaPlayer.isInitialized){
+                        mediaPlayer = MediaPlayer.create(this, R.raw.notif)
                     }
-                }, ContextCompat.getMainExecutor(this@ExerciseActivity))
+                    if (mediaPlayer.isPlaying){
+                        mediaPlayer.pause()
+                        mediaPlayer.seekTo(0)
+                    }
+                    mediaPlayer.start()
+                    unbindCamera()
+                    repList.add(exerciseCounter)
+                    weightList.add(weight)
+                    if (currentSet==sets){
+                        finishDialog()
+                    } else {
+                        nextSetDialog()
+                    }
+                }
             }
         }
         if (name.contains("Squat")){
@@ -321,11 +377,13 @@ class ExerciseActivity : AppCompatActivity() {
                 return true
             }
         } else if(name.contains("Row")) {
-            if (exerciseState=="stretch" && rowDownPosition(wristLeft, wristRight, hipLeft, hipRight)){
+            if (exerciseState=="stretch" && rowDownPosition(elbowLeft, elbowRight, hipLeft, hipRight)){
                 return true
             }
         } else if(name.contains("Push Up")) {
-
+            if(exerciseState=="stretch" && isDownPosition(shoulderLeft, shoulderRight, elbowLeft, elbowRight)){
+                return true
+            }
         } else if(name.contains("Skullcrusher")) {
             if (exerciseState=="stretch" && bicepDownPosition(wristLeft, wristRight, elbowLeft, elbowRight)){
                 return true
@@ -337,32 +395,125 @@ class ExerciseActivity : AppCompatActivity() {
         }
         return false
     }
-
+    private fun unbindCamera(){
+        cameraProviderFuture?.addListener({
+            try {
+                val cameraProvider = cameraProviderFuture!!.get()
+                cameraProvider.unbindAll()
+            } catch (e: ExecutionException) {
+            } catch (e: InterruptedException) {
+            }
+        }, ContextCompat.getMainExecutor(this@ExerciseActivity))
+    }
 
     private fun nextSetDialog(){
-
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Target Repetition Reached")
-            .setMessage("")
-            .setPositiveButton("Continue"){_ ,_ ->
-
+        builder.setTitle("Set Finished")
+            .setMessage("Would you like to continue to the next set?")
+            .setPositiveButton("Continue"){dialog ,_ ->
+                dialog.dismiss()
+                inputDialog()
             }
-            .setNegativeButton("Finish Exercise"){_ ,_ ->
-
+            .setNegativeButton("Finish Exercise"){dialog ,_ ->
+                dialog.dismiss()
+                endActivity()
             }
-        builder.create().show()
+        builder.setCancelable(false)
+        builder.show()
+    }
+
+    private fun endActivity(){
+        if (repList.isNotEmpty() && weightList.isNotEmpty()){
+            historyViewModel.createHistoryDetail(name,repList,weightList)
+            historyViewModel.historyDetail.observe(this@ExerciseActivity){
+                if(it!=null){
+                    val intent = Intent()
+                    intent.putExtra("historyId",historyId)
+                    intent.putExtra("detailId",it)
+                    setResult(RESULT_OK,intent)
+                    finish()
+                }
+            }
+        } else {
+            val intent = Intent()
+            intent.putExtra("historyId",historyId)
+            intent.putExtra("detailId","null")
+            setResult(RESULT_OK,intent)
+            finish()
+        }
+    }
+
+    private fun inputDialog(){
+        val builder = AlertDialog.Builder(this)
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_NUMBER
+        builder.setTitle("Weight Input")
+        builder.setView(input)
+        builder.setMessage("Please input the weight")
+        builder.setPositiveButton("Start"){dialog, which ->
+            val weightInput = input.text.toString()
+            if (weightInput.isNotEmpty()){
+                val weightInInt = weightInput.toInt()
+                if (weightInInt<=0){
+                    Toast.makeText(this,"Enter a valid number", Toast.LENGTH_SHORT).show()
+                    inputDialog()
+                } else {
+                    dialog.dismiss()
+                    weight = weightInInt
+                    currentSet++
+                    exerciseCounter = 0
+                    timer!!.start()
+                }
+            } else {
+                dialog.dismiss()
+                Toast.makeText(this,"Enter a number", Toast.LENGTH_SHORT).show()
+                inputDialog()
+            }
+        }
+        builder.setNegativeButton("Cancel"){ dialog, which ->
+            dialog.dismiss()
+            nextSetDialog()
+        }
+        builder.setCancelable(false)
+        builder.show()
     }
 
     private fun giveUpDialog(){
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("")
-            .setMessage("")
-            .setPositiveButton("Finish Set"){_,_ ->
-
+        builder.setTitle("Give up")
+            .setMessage("Would you like to finish the set?")
+            .setPositiveButton("Yes"){dialog,_ ->
+                if (exerciseCounter>0){
+                    repList.add(exerciseCounter)
+                    weightList.add(weight)
+                }
+                dialog.dismiss()
+                if (currentSet>=sets){
+                    dialog.dismiss()
+                    finishDialog()
+                } else {
+                    dialog.dismiss()
+                    nextSetDialog()
+                }
             }
-            .setNegativeButton("Finish Exercise"){_,_ ->
-
+            .setNegativeButton("No"){dialog,_ ->
+                dialog.dismiss()
+                timer!!.start()
             }
+        builder.setCancelable(false)
+        builder.create().show()
+    }
+
+    private fun finishDialog(){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Exercise Finished")
+        builder.setMessage("Targeted set has been reached!")
+            .setPositiveButton("Ok"){dialog, which ->
+                dialog.dismiss()
+                endActivity()
+            }
+        builder.setCancelable(false)
+        builder.show()
     }
 
     private fun updateExerciseState(pose: Pose, name: String){
@@ -376,8 +527,6 @@ class ExerciseActivity : AppCompatActivity() {
         val hipRight = pose.getPoseLandmark(PoseLandmark.RIGHT_HIP)
         val kneeLeft = pose.getPoseLandmark(PoseLandmark.LEFT_KNEE)
         val kneeRight = pose.getPoseLandmark(PoseLandmark.RIGHT_KNEE)
-
-
         if (name.contains("Squat")){
             if(squatUpPosition(kneeLeft, kneeRight, hipLeft, hipRight)){
                 exerciseState = "stretch"
@@ -403,9 +552,9 @@ class ExerciseActivity : AppCompatActivity() {
                 exerciseState = "stretch"
             }
         } else if(name.contains("Row")) {
-            if(rowDownPosition(wristLeft, wristRight, hipLeft, hipRight)){
+            if(rowDownPosition(elbowLeft, elbowRight, hipLeft, hipRight)){
                 exerciseState="squeeze"
-            } else if(rowUpPosition(wristLeft, wristRight, hipLeft, hipRight)){
+            } else if(rowUpPosition(elbowLeft, elbowRight, hipLeft, hipRight)){
                 exerciseState="stretch"
             }
         } else if(name.contains("Push Up")) {
@@ -429,7 +578,6 @@ class ExerciseActivity : AppCompatActivity() {
         }
         Log.i("Position",exerciseState)
     }
-
     private fun isUpPosition(shoulderLeft: PoseLandmark?, shoulderRight: PoseLandmark?, elbowLeft: PoseLandmark?, elbowRight: PoseLandmark?): Boolean {
         return shoulderLeft != null
                 && shoulderRight != null
@@ -438,38 +586,30 @@ class ExerciseActivity : AppCompatActivity() {
                 && shoulderLeft.position.y > elbowLeft.position.y
                 && shoulderRight.position.y > elbowRight.position.y
     }
-
-    private fun rowDownPosition(wristLeft: PoseLandmark?, wristRight: PoseLandmark?, hipLeft: PoseLandmark? , hipRight: PoseLandmark?):Boolean{
-        return wristLeft!=null && wristRight!=null && hipLeft!=null && hipRight!=null && hipLeft.position.y > wristLeft.position.y && hipRight.position.y > wristRight.position.y
+    private fun rowDownPosition(elbowLeft: PoseLandmark?, elbowRight: PoseLandmark?, hipLeft: PoseLandmark?, hipRight: PoseLandmark?):Boolean{
+        return elbowLeft!=null && elbowRight!=null && hipLeft!=null && hipRight!=null && hipLeft.position.y > elbowLeft.position.y && hipRight.position.y > elbowRight.position.y
     }
-    private fun rowUpPosition(wristLeft: PoseLandmark?, wristRight: PoseLandmark?, hipLeft: PoseLandmark? , hipRight: PoseLandmark?):Boolean{
-        return wristLeft!=null && wristRight!=null && hipLeft!=null && hipRight!=null && hipLeft.position.y < wristLeft.position.y && hipRight.position.y < wristRight.position.y
+    private fun rowUpPosition(elbowLeft: PoseLandmark?, elbowRight: PoseLandmark?, hipLeft: PoseLandmark?, hipRight: PoseLandmark?):Boolean{
+        return elbowLeft!=null && elbowRight!=null && hipLeft!=null && hipRight!=null && hipLeft.position.y < elbowLeft.position.y && hipRight.position.y < elbowRight.position.y
     }
-
     private fun bicepDownPosition(wristLeft: PoseLandmark?, wristRight: PoseLandmark?, elbowLeft: PoseLandmark?, elbowRight: PoseLandmark?): Boolean{
         return wristRight!=null && wristLeft!=null && elbowLeft!=null && elbowRight!=null && wristLeft.position.y < elbowLeft.position.y && wristRight.position.y < elbowRight.position.y
     }
-
     private fun bicepUpPosition(wristLeft: PoseLandmark?, wristRight: PoseLandmark?, elbowLeft: PoseLandmark?, elbowRight: PoseLandmark?): Boolean{
         return wristRight!=null && wristLeft!=null && elbowLeft!=null && elbowRight!=null && wristLeft.position.y > elbowLeft.position.y && wristRight.position.y > elbowRight.position.y
     }
-
     private fun deadliftDownPosition(wristLeft: PoseLandmark?, wristRight: PoseLandmark?, kneeLeft: PoseLandmark?, kneeRight: PoseLandmark?) : Boolean {
         return wristRight!=null && wristLeft!=null && kneeLeft!=null && kneeRight!=null && kneeLeft.position.y > wristLeft.position.y && kneeRight.position.y > wristRight.position.y
     }
-
     private fun deadliftUpPosition(wristLeft: PoseLandmark?, wristRight: PoseLandmark?, kneeLeft: PoseLandmark?, kneeRight: PoseLandmark?) : Boolean {
         return wristRight!=null && wristLeft!=null && kneeLeft!=null && kneeRight!=null && kneeLeft.position.y < wristLeft.position.y && kneeRight.position.y < wristRight.position.y
     }
-
     private fun squatDownPosition(kneeLeft: PoseLandmark?, kneeRight: PoseLandmark?, hipLeft: PoseLandmark?, hipRight: PoseLandmark?) : Boolean {
         return kneeRight!=null && kneeLeft!=null && hipLeft!=null && hipRight!=null && kneeLeft.position.y >= hipLeft.position.y && kneeRight.position.y >= hipRight.position.y
     }
-
     private fun squatUpPosition(kneeLeft: PoseLandmark?, kneeRight: PoseLandmark?, hipLeft: PoseLandmark?, hipRight: PoseLandmark?) : Boolean {
         return kneeRight!=null && kneeLeft!=null && hipLeft!=null && hipRight!=null && kneeLeft.position.y < hipLeft.position.y && kneeRight.position.y < hipRight.position.y
     }
-
     private fun isDownPosition(shoulderLeft: PoseLandmark?, shoulderRight: PoseLandmark?, elbowLeft: PoseLandmark?, elbowRight: PoseLandmark?): Boolean {
         return shoulderLeft != null
                 && shoulderRight != null

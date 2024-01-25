@@ -1,9 +1,16 @@
 package com.example.personalrecordv4
 
+import android.content.Context
 import android.content.Intent
+import android.media.AudioAttributes
+import android.media.AudioManager
+import android.media.MediaPlayer
+import android.media.SoundPool
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,18 +31,23 @@ class EditSplitActivity : AppCompatActivity() , onItemClickListener {
     private var status = ""
     private var repetition: Int = 0
     private var set: Int = 0
+    private var workoutType = ""
     private var splitIdArray = mutableListOf<String>()
+    private lateinit var mediaPlayer: MediaPlayer
 
-    override fun OnItemSelect(name: String, reps: Int, sets: Int, spltids: Array<String>) {
-        super.OnItemSelect(name, reps, sets, spltids)
+    override fun OnWorkoutStart(name: String, reps: Int, sets: Int, spltids: Array<String>,type: String) {
+        super.OnWorkoutStart(name, reps, sets, spltids,type)
         val intent = Intent(this,EditExerciseActivity::class.java)
         intent.putExtra("exerciseId",spltids)
         intent.putExtra("repetition",repetition)
         intent.putExtra("set",set)
         intent.putExtra("splitId",name)
         intent.putExtra("Status",status)
+        intent.putExtra("workoutName",workoutname)
+        intent.putExtra("workoutType",workoutType)
+        intent.putExtra("splitName",type)
         startActivity(intent)
-
+        finish()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,12 +59,17 @@ class EditSplitActivity : AppCompatActivity() , onItemClickListener {
         set = intent.getIntExtra("set",3)
         splitIdArray = intent.getStringArrayExtra("splitId")!!.toMutableList()
         status = intent.getStringExtra("Status").toString()
+        workoutType = intent.getStringExtra("workoutType").toString()
         binding.textView18.text = workoutname
         binding.tvSet.text = set.toString()
         binding.tvRep.text = repetition.toString()
         binding.ivWPBack.setOnClickListener {
             finish()
         }
+        if (status=="Exercise"){
+            binding.ivWPDone.visibility = View.GONE
+        }
+
         binding.ivWPDone.setOnClickListener{
             val intent  = Intent(this, MainActivity::class.java)
             startActivity(intent)

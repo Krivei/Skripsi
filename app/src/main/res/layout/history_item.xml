@@ -6,16 +6,13 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:background="@color/white"
-
     >
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="@drawable/rounded3"
         android:padding="15dp"
         >
-
         <TextView
             android:id="@+id/tvNameHistory"
             android:layout_width="wrap_content"
@@ -30,13 +27,13 @@
             />
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/tvHistoryType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Workout Type"
+            android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            android:text="TextView"
             app:layout_constraintStart_toStartOf="@+id/tvNameHistory"
             app:layout_constraintTop_toBottomOf="@+id/tvNameHistory" />
 
@@ -50,5 +47,16 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvSplitNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/tvHistoryType"
+            app:layout_constraintTop_toBottomOf="@+id/tvHistoryType" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

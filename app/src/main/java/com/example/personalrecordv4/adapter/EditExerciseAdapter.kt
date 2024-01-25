@@ -40,5 +40,8 @@ class EditExerciseAdapter(private val exerciselist : MutableList<Exercise>, val 
         holder.clDelete.setOnClickListener {
             itemClick.OnItemDelete(currentItem.name,currentItem.defaultReps,currentItem.defaultSets,"")
         }
+        holder.clDo.setOnClickListener {
+            itemClick.OnExerciseDo(currentItem.name)
+        }
     }
 }

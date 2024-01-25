@@ -58,7 +58,7 @@ class WorkoutPlanAdapter(private val workoutPlanList: MutableList<WorkoutPlan>, 
             currentItem.splitId.forEach {
                 splitids+=it
             }
-            itemClick.OnWorkoutStart(currentItem.name,currentItem.reps,currentItem.sets,splitids)
+            itemClick.OnWorkoutStart(currentItem.name,currentItem.reps,currentItem.sets,splitids, currentItem.type)
         }
     }
 }
