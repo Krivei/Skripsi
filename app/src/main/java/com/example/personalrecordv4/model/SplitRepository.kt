@@ -83,25 +83,25 @@ class SplitRepository {
                         if (exampleNumber==1){
                             //fb
                             if (splitNumber==1){
-                                listBaru = mutableListOf<String>("Dumbbell Incline Bench Press","Pull Up","Dumbbell Bicep Curl","Bench Dips","Dumbbell Overhead Press","Squat")
+                                listBaru = mutableListOf<String>("Dumbbell Incline Bench Press","Pull Up","Dumbbell Bicep Curl","Dumbbell Skullcrusher","Dumbbell Overhead Press","Squat")
                             } else if(splitNumber==2){
-                                 listBaru = mutableListOf<String>("Push Up","Dumbbell Row","Dumbbell Bicep Curl","Bench Dips","Deadlift","Calf Raise")
+                                 listBaru = mutableListOf<String>("Push Up","Dumbbell Row","Dumbbell Bicep Curl","Dumbbell Skullcrusher","Deadlift")
                             }
                         } else if(exampleNumber==2){
                             //ul
                             if (splitNumber==1){
-                                 listBaru = mutableListOf<String>("Dumbbell Incline Bench Press","Push Up","Pull Up","Dumbbell Bicep Curl","Bench Dips","Dumbbell Overhead Press")
+                                 listBaru = mutableListOf<String>("Dumbbell Incline Bench Press","Push Up","Pull Up","Dumbbell Bicep Curl","Dumbbell Skullcrusher","Dumbbell Overhead Press")
                             } else if(splitNumber==2){
-                                 listBaru = mutableListOf<String>("Squat","Deadlift","Calf Raise")
+                                 listBaru = mutableListOf<String>("Squat","Deadlift")
                             }
                         } else if(exampleNumber==3){
                             //ppl
                             if (splitNumber==1){
-                                 listBaru = mutableListOf<String>("Push Up","Dumbbell Overhead Press","Bench Dips","Dumbbell Incline Bench Press")
+                                 listBaru = mutableListOf<String>("Push Up","Dumbbell Overhead Press","Dumbbell Skullcrusher","Dumbbell Incline Bench Press")
                             } else if(splitNumber==2){
                                  listBaru = mutableListOf<String>("Pull Up","Deadlift","Dumbbell Row","Dumbbell Bicep Curl")
                             } else if(splitNumber==3){
-                                 listBaru = mutableListOf<String>("Squat","Deadlift","Calf Raise")
+                                 listBaru = mutableListOf<String>("Squat","Deadlift")
                             }
                         }
                         listBaru.forEach { unit ->

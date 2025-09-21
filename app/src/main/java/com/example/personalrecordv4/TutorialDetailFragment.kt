@@ -1,5 +1,6 @@
 package com.example.personalrecordv4
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -53,8 +54,23 @@ class TutorialDetailFragment : Fragment(R.layout.fragment_tutorial_detail) {
                     it.start()
                 }
                 binding.btnTryTutorial.text = "Try ${tutorialViewModel.tutorial.value!!.name}"
+                binding.btnTryTutorial.setOnClickListener {
+                    val intent = Intent(activity, ExerciseActivity::class.java)
+                    intent.putExtra("Name",tutorialViewModel.tutorial.value!!.name)
+                    intent.putExtra("Rep",5)
+                    intent.putExtra("Status","Tutorial")
+                    startActivity(intent)
+                }
             }
         })
+
+        binding.btnBack.setOnClickListener {
+            val fragmentTransaction = requireFragmentManager().beginTransaction()
+            val fragment = TutorialsFragment()
+            fragmentTransaction.replace(R.id.fragmentContainerView, fragment)
+            fragmentTransaction.addToBackStack(null)
+            fragmentTransaction.commit()
+        }
     }
 
 }

@@ -39,7 +39,7 @@ class EditSplitAdapter (private val splitList: MutableList<Split>, private val s
                 }
 
             }
-            itemClick.OnItemSelect(currentId,0,0,exerciseIds)
+            itemClick.OnWorkoutStart(currentId,0,0,exerciseIds,currentItem.name)
         }
     }
 }

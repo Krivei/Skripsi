@@ -1,32 +1,39 @@
 package com.example.personalrecordv4
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.personalrecordv4.adapter.HistoryAdapter
+import com.example.personalrecordv4.listener.onItemClickListener
+import com.example.personalrecordv4.viewmodel.HistoryViewModel
+import com.example.personalrecordv4.viewmodel.UserViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HistoryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HistoryFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
+class HistoryFragment : Fragment() , onItemClickListener {
+    private val historyViewModel : HistoryViewModel by activityViewModels()
+    private var recyclerView : RecyclerView? = null
+    private val userViewModel : UserViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        userViewModel.userData.observe(this){
+            if (it!=null){
+                historyViewModel.getHistory()
+            }
         }
+    }
+
+    override fun OnItemSelect(name: String, reps: Int, sets: Int, spltids: Array<String>){
+        super.OnItemSelect(name, reps, sets, spltids)
+        val intent = Intent(activity, HistoryDetailActivity::class.java)
+        intent.putExtra("historyName",name)
+        intent.putExtra("historyIds",spltids)
+        startActivity(intent)
     }
 
     override fun onCreateView(
@@ -37,23 +44,19 @@ class HistoryFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_history, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HistoryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HistoryFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        historyViewModel.listHistory.observe(viewLifecycleOwner){
+            if (it!=null){
+                recyclerView.apply {
+                    recyclerView = view?.findViewById(R.id.rvHistory)
+                    recyclerView?.layoutManager = LinearLayoutManager(activity)
+                    recyclerView?.setHasFixedSize(true)
+                    recyclerView?.adapter = HistoryAdapter(it,this@HistoryFragment)
                 }
             }
+        }
     }
+
 }

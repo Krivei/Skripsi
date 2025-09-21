@@ -7,21 +7,20 @@
     android:layout_height="wrap_content"
 android:padding="10dp"
     android:background="@color/white"
-
     >
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@drawable/rounded"
+        android:background="@drawable/rounded3"
         >
 
         <TextView
             android:id="@+id/splittitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:text="TextView"
             android:textStyle="bold"
             android:textSize="20sp"
